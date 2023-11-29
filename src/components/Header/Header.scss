@@ -1,0 +1,52 @@
+@use '../../styles/abstracts/colors';
+@use '../../styles/abstracts/fonts';
+
+.header-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 5rem;
+  padding: 0 1rem;
+  gap: 1rem;
+
+  box-shadow: colors.$box-shadow;
+
+  button {
+    cursor: pointer;
+  }
+}
+
+.add-supplier-btn {
+  background-color: colors.$light-blue;
+  color: colors.$white;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  width: 8rem;
+  height: 2rem;
+  transition: 0.2s ease;
+
+  font-weight: fonts.$semi-bold;
+  font-size: fonts.$body;
+
+  &:hover {
+    background-color: colors.$lighter-blue;
+  }
+}
+
+.edit-supplier-btn,
+.delete-supplier-btn {
+  background-color: colors.$white;
+  color: colors.$black;
+  height: 2rem;
+  width: 2.5rem;
+
+  border: 1px solid colors.$black;
+  outline: none;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  &:hover {
+    border: 1px solid colors.$blue;
+    color: colors.$blue;
+  }
+}
