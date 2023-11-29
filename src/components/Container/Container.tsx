@@ -1,3 +1,5 @@
+import './Container.scss';
+
 interface ContainerProps {
   children: JSX.Element;
 

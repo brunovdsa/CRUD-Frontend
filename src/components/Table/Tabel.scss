@@ -1,0 +1,39 @@
+@use '../../styles/abstracts/colors';
+@use '../../styles/abstracts/fonts';
+
+.table-wrapper {
+  margin-bottom: 1rem;
+
+  padding: 1rem 0.3rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+table {
+  background-color: colors.$black;
+  font-size: fonts.$text;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  thead,
+  tbody,
+  tfoot {
+    background-color: colors.$white;
+  }
+
+  thead {
+    td {
+      width: 4rem;
+    }
+  }
+
+  td {
+    height: 2rem;
+    padding: 0.3rem;
+  }
+
+  .td-input {
+    width: 1rem;
+  }
+}
