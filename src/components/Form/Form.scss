@@ -1,0 +1,119 @@
+@use '../../styles/abstracts/colors';
+@use '../../styles/abstracts/fonts';
+
+.title {
+  justify-content: start;
+
+  font-size: fonts.$body;
+  font-weight: fonts.$semi-bold;
+  padding: 1rem 0;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  gap: 1.5rem;
+
+  font-size: fonts.$text;
+  font-weight: fonts.$light;
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  input {
+    height: 2rem;
+  }
+
+  label {
+    span {
+      margin: 0;
+      padding: 0;
+      color: red;
+    }
+  }
+
+  .form-header {
+    display: flex;
+    flex-direction: column;
+
+    .inputs-header {
+      display: flex;
+      justify-content: start;
+      gap: 1rem;
+
+      div {
+        input,
+        select {
+          width: 100%;
+        }
+
+        select {
+          height: 2.33rem;
+        }
+      }
+    }
+  }
+
+  .form-body {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+
+    textarea {
+      height: 8rem;
+      resize: none;
+    }
+  }
+
+  .form-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: end;
+
+    .btn-cancel,
+    .btn-submit-form {
+      width: 6rem;
+      height: 2.5rem;
+      border-radius: 6px;
+      transition: 0.2s ease;
+      font-weight: fonts.$regular;
+      font-size: fonts.$text;
+    }
+
+    .btn-submit-form {
+      border: none;
+      outline: none;
+      background-color: colors.$blue;
+      color: colors.$white;
+
+      &:hover {
+        background-color: colors.$hover-blue;
+      }
+    }
+
+    .btn-cancel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: colors.$white;
+      color: colors.$black;
+      cursor: pointer;
+
+      border: 1px solid colors.$black;
+
+      outline: none;
+
+      &:hover {
+        border: 1px solid colors.$blue;
+        color: colors.$blue;
+      }
+    }
+  }
+}

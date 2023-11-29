@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { DeleteIcon, EditIcon } from '../Icons/Icons';
 import { ModalNewSupplier } from '../ModalNewSupplier/ModalNewSupplier';
@@ -7,8 +7,9 @@ import './Header.scss';
 export function Header() {
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const handleModalActive = () => {
+  const handleModalActive = (e: React.MouseEvent<HTMLElement>) => {
     setIsActive(!isActive);
+    e.preventDefault();
   };
 
   return (
@@ -23,12 +24,13 @@ export function Header() {
         <DeleteIcon />
       </button>
 
-      {isActive === true ? (
-        <div>
-          <ModalNewSupplier onClick={handleModalActive}></ModalNewSupplier>
-        </div>
-      ) : (
-        ''
+      {isActive && (
+        <>
+          <div className='bg-overlay' onClick={handleModalActive}></div>
+          <div>
+            <ModalNewSupplier onClick={handleModalActive}></ModalNewSupplier>
+          </div>
+        </>
       )}
     </header>
   );
