@@ -1,6 +1,16 @@
+import { useEffect } from 'react';
 import './Tabel.scss';
+import axios from 'axios';
 
 export function Table() {
+  useEffect(() => {
+    const ENDPOINT: string = 'http://localhost:8080/api/clientes';
+
+    axios.get(ENDPOINT).then((res) => {
+      console.log(res);
+    });
+  }, []);
+
   return (
     <div className='table-wrapper'>
       <table>
