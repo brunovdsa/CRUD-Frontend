@@ -1,52 +1,60 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Tabel.scss';
-import axios from 'axios';
+import { request } from '../../utils/request';
+
+interface ClientData {
+  map(
+    arg0: (client: ClientData) => import('react/jsx-runtime').JSX.Element
+  ): import('react').ReactNode;
+
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  tipoFornecedor?: any;
+  observacao?: any;
+}
 
 export function Table() {
+  const [clientData, setClientData] = useState<ClientData>();
+
   useEffect(() => {
     const ENDPOINT: string = 'http://localhost:8080/api/clientes';
-
-    axios.get(ENDPOINT).then((res) => {
-      console.log(res);
-    });
+    request<ClientData>(ENDPOINT).then((response) => setClientData(response));
   }, []);
 
   return (
     <div className='table-wrapper'>
       <table>
         <thead>
-          <td className='td-input'>
-            <input type='checkbox' />
-          </td>
-          <td>Nome</td>
-          <td>Email</td>
-          <td>Telefone</td>
-          <td>Tipo de fornecedor</td>
-          <td>Observação</td>
-        </thead>
-        <tbody>
           <tr>
             <td className='td-input'>
               <input type='checkbox' />
             </td>
-            <td>Bruno Vinicius Souza de Sá</td>
-            <td>brunoviniciussouza.sa@gmail.com</td>
-            <td>{'(47) 99905-4703'}</td>
-            <td>Primario</td>
-            <td>Apagar</td>
+            <td>Nome</td>
+            <td>Email</td>
+            <td>Telefone</td>
+            <td>Tipo de fornecedor</td>
+            <td>Observação</td>
           </tr>
+        </thead>
+        <tbody>
+          {clientData &&
+            clientData.map((client: ClientData) => {
+              return (
+                <tr key={client.id}>
+                  <td className='td-input'>
+                    <input type='checkbox' />
+                  </td>
+                  <td>{client.nome}</td>
+                  <td>{client.email}</td>
+                  <td>{client.telefone}</td>
+                  <td>{client.tipoFornecedor}</td>
+                  <td>{client.observacao}</td>
+                </tr>
+              );
+            })}
         </tbody>
-        <tfoot>
-          <td className='td-input'>
-            <input type='checkbox' />
-          </td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-
-          <td>&nbsp;</td>
-        </tfoot>
       </table>
     </div>
   );
