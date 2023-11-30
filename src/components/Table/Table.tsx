@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './Tabel.scss';
 import { request } from '../../utils/request';
 
-interface ClientData {
+export interface ClientData {
   map(
     arg0: (client: ClientData) => import('react/jsx-runtime').JSX.Element
   ): import('react').ReactNode;
