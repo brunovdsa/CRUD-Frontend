@@ -1,11 +1,12 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import './Form.scss';
 
 interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-interface JsonData {
+interface clienteDataProps {
+  id: number;
   nome: string;
   telefone: string;
   observacao: string;
@@ -14,33 +15,36 @@ interface JsonData {
 }
 
 export function Form(props: FormProps) {
-  const [jsonData, setJsonData] = useState<JsonData>({
+  const [clienteData, setClienteData] = useState<clienteDataProps>({
+    id: 0,
     nome: '',
-    telefone: '',
-    observacao: '',
-    tipoFornecedor: '',
     email: '',
+    telefone: '',
+    tipoFornecedor: 'selecione',
+    observacao: '',
   });
 
   const inputChanges = (e: any) => {
     const value = e.target.value;
 
-    setJsonData({
-      ...jsonData,
+    setClienteData({
+      ...clienteData,
       [e.target.name]: value,
     });
   };
 
-  const onClick = (e: any) => {
+  const onClick = async (e: any) => {
+    const body = new FormData();
+
+    body.set('clienteData', JSON.stringify(clienteData));
+
+    console.log(clienteData);
+
     e.preventDefault();
-
-    console.log(jsonData);
-
-    fetch('http://localhost:8080/api/clientes', {
+    await fetch('http://localhost:8080/api/clientes', {
       method: 'POST',
-      headers: { 'Content-Type': 'multipart/form-data' },
-      body: JSON.stringify(jsonData),
-    });
+      body: body,
+    }).then((res) => console.log(res));
   };
 
   return (
@@ -57,7 +61,7 @@ export function Form(props: FormProps) {
               type='text'
               name='nome'
               placeholder='Nome'
-              value={jsonData.nome}
+              value={clienteData.nome}
               onChange={inputChanges}
             />
           </div>
@@ -70,7 +74,7 @@ export function Form(props: FormProps) {
               type='text'
               name='email'
               placeholder='E-mail'
-              value={jsonData.email}
+              value={clienteData.email}
               onChange={inputChanges}
             />
           </div>
@@ -78,11 +82,17 @@ export function Form(props: FormProps) {
             <label htmlFor='select-supplier'>
               Tipo de Fornecedor<span>*</span>
             </label>
-            <select required name='select-supplier' id='select-supplier'>
+            <select
+              required
+              name='tipoFornecedor'
+              id='select-supplier'
+              onChange={inputChanges}
+              value={clienteData.tipoFornecedor}
+            >
               <option value=''>Selecione</option>
-              <option value='Atacadista'>Atacadista</option>
+              <option value='teste'>Atacadista</option>
               <option value='Distribuidor'>Distribuidor</option>
-              <option value='Fabricante'>Distribuidor</option>
+              <option value='Terceiro'>Terceiro</option>
               <option value='Varejista'>Varejista</option>
             </select>
           </div>
@@ -97,13 +107,13 @@ export function Form(props: FormProps) {
           type='text'
           name='telefone'
           placeholder='Phone'
-          value={jsonData.telefone}
+          value={clienteData.telefone}
           onChange={inputChanges}
         />
         <label htmlFor='comments'>Observações</label>
         <textarea
           name='observacao'
-          value={jsonData.observacao}
+          value={clienteData.observacao}
           onChange={inputChanges}
         />
       </fieldset>
