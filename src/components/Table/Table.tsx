@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import './Tabel.scss';
-import { request } from '../../utils/request';
-
 export interface ClientData {
   map(
     arg0: (client: ClientData) => import('react/jsx-runtime').JSX.Element
@@ -10,17 +8,33 @@ export interface ClientData {
   id: number;
   nome: string;
   email: string;
+
   telefone: string;
   tipoFornecedor?: any;
   observacao?: any;
+  length: any;
 }
 
-export function Table() {
-  const [clientData, setClientData] = useState<ClientData>();
+export interface TableProps {
+  handleChecked: ChangeEventHandler<HTMLInputElement>;
+  isChecked: String[];
+}
+
+export function Table(props: TableProps) {
+  const [clientData, setClientData] = useState<Array<ClientData>>();
 
   useEffect(() => {
     const ENDPOINT: string = 'http://localhost:8080/api/clientes';
-    request<ClientData>(ENDPOINT).then((response) => setClientData(response));
+    const fetchData = async (url: string) => {
+      try {
+        const response = await fetch(url);
+        const results = await response.json();
+        setClientData(results);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData(ENDPOINT);
   }, []);
 
   return (
@@ -44,7 +58,11 @@ export function Table() {
               return (
                 <tr key={client.id}>
                   <td className='td-input'>
-                    <input type='checkbox' />
+                    <input
+                      type='checkbox'
+                      value={client.id}
+                      onChange={props.handleChecked}
+                    />
                   </td>
                   <td>{client.nome}</td>
                   <td>{client.email}</td>

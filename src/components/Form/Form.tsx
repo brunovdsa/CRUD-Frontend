@@ -1,54 +1,16 @@
-import { useState } from 'react';
 import './Form.scss';
+import { clienteDataProps } from '../ModalNewSupplier/ModalNewSupplier';
 
 interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
-}
-
-interface clienteDataProps {
-  id: number;
-  nome: string;
-  telefone: string;
-  observacao: string;
-  tipoFornecedor: string;
-  email: string;
+  clienteData: clienteDataProps;
+  inputChanges: any;
+  onSubmit: any;
 }
 
 export function Form(props: FormProps) {
-  const [clienteData, setClienteData] = useState<clienteDataProps>({
-    id: 0,
-    nome: '',
-    email: '',
-    telefone: '',
-    tipoFornecedor: 'selecione',
-    observacao: '',
-  });
-
-  const inputChanges = (e: any) => {
-    const value = e.target.value;
-
-    setClienteData({
-      ...clienteData,
-      [e.target.name]: value,
-    });
-  };
-
-  const onClick = async (e: any) => {
-    const body = new FormData();
-
-    body.set('clienteData', JSON.stringify(clienteData));
-
-    console.log(clienteData);
-
-    e.preventDefault();
-    await fetch('http://localhost:8080/api/clientes', {
-      method: 'POST',
-      body: body,
-    }).then((res) => console.log(res));
-  };
-
   return (
-    <form className='form' id='form' onSubmit={onClick}>
+    <form className='form' id='form' onSubmit={props.onSubmit}>
       <fieldset className='form-header'>
         <h1 className='title'>Novo Fornecedor</h1>
         <div className='inputs-header'>
@@ -61,8 +23,8 @@ export function Form(props: FormProps) {
               type='text'
               name='nome'
               placeholder='Nome'
-              value={clienteData.nome}
-              onChange={inputChanges}
+              value={props.clienteData.nome}
+              onChange={props.inputChanges}
             />
           </div>
           <div>
@@ -74,8 +36,8 @@ export function Form(props: FormProps) {
               type='text'
               name='email'
               placeholder='E-mail'
-              value={clienteData.email}
-              onChange={inputChanges}
+              value={props.clienteData.email}
+              onChange={props.inputChanges}
             />
           </div>
           <div>
@@ -86,8 +48,8 @@ export function Form(props: FormProps) {
               required
               name='tipoFornecedor'
               id='select-supplier'
-              onChange={inputChanges}
-              value={clienteData.tipoFornecedor}
+              onChange={props.inputChanges}
+              value={props.clienteData.tipoFornecedor}
             >
               <option value=''>Selecione</option>
               <option value='teste'>Atacadista</option>
@@ -107,14 +69,14 @@ export function Form(props: FormProps) {
           type='text'
           name='telefone'
           placeholder='Phone'
-          value={clienteData.telefone}
-          onChange={inputChanges}
+          value={props.clienteData.telefone}
+          onChange={props.inputChanges}
         />
         <label htmlFor='comments'>Observações</label>
         <textarea
           name='observacao'
-          value={clienteData.observacao}
-          onChange={inputChanges}
+          value={props.clienteData.observacao}
+          onChange={props.inputChanges}
         />
       </fieldset>
 
