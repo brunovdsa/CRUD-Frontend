@@ -6,42 +6,45 @@ interface FormProps {
 }
 
 interface JsonData {
-  id: number;
-  name: string;
+  nome: string;
+  telefone: string;
+  observacao: string;
+  tipoFornecedor: string;
   email: string;
-  phone: string;
-  supplierType: string;
-  comments: string;
 }
 
 export function Form(props: FormProps) {
   const [jsonData, setJsonData] = useState<JsonData>({
-    id: 1,
-    name: '',
+    nome: '',
+    telefone: '',
+    observacao: '',
+    tipoFornecedor: '',
     email: '',
-    phone: '',
-    supplierType: '',
-    comments: '',
   });
 
-  const inputChanges = (evt: any) => {
-    console.log(evt);
-    const value = evt.target.value;
-
-    // const name = ;
+  const inputChanges = (e: any) => {
+    const value = e.target.value;
 
     setJsonData({
       ...jsonData,
-      [evt.target.name]: value,
+      [e.target.name]: value,
     });
   };
 
-  const onClick = () => {
+  const onClick = (e: any) => {
+    e.preventDefault();
+
     console.log(jsonData);
+
+    fetch('http://localhost:8080/api/clientes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      body: JSON.stringify(jsonData),
+    });
   };
 
   return (
-    <form className='form'>
+    <form className='form' id='form' onSubmit={onClick}>
       <fieldset className='form-header'>
         <h1 className='title'>Novo Fornecedor</h1>
         <div className='inputs-header'>
@@ -52,9 +55,9 @@ export function Form(props: FormProps) {
             <input
               required
               type='text'
-              name='name'
+              name='nome'
               placeholder='Nome'
-              value={jsonData.name}
+              value={jsonData.nome}
               onChange={inputChanges}
             />
           </div>
@@ -92,15 +95,15 @@ export function Form(props: FormProps) {
         <input
           required
           type='text'
-          name='phone'
+          name='telefone'
           placeholder='Phone'
-          value={jsonData.phone}
+          value={jsonData.telefone}
           onChange={inputChanges}
         />
         <label htmlFor='comments'>Observações</label>
         <textarea
-          name='comments'
-          value={jsonData.comments}
+          name='observacao'
+          value={jsonData.observacao}
           onChange={inputChanges}
         />
       </fieldset>
@@ -109,7 +112,7 @@ export function Form(props: FormProps) {
         <button onClick={props.onClick} className='btn-cancel'>
           Cancelar
         </button>
-        <button onClick={onClick} className='btn-submit-form'>
+        <button type='submit' className='btn-submit-form'>
           Salvar
         </button>
       </fieldset>
