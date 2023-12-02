@@ -1,8 +1,12 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import './Tabel.scss';
-export interface SupplierData {
+interface TableProps {
+  handleChecked: ChangeEventHandler<HTMLInputElement>;
+  isChecked: String[];
+}
+interface TableDataProps {
   map(
-    arg0: (supplier: SupplierData) => import('react/jsx-runtime').JSX.Element
+    arg0: (supplier: TableDataProps) => import('react/jsx-runtime').JSX.Element
   ): import('react').ReactNode;
 
   id: number;
@@ -15,13 +19,8 @@ export interface SupplierData {
   length: any;
 }
 
-export interface TableProps {
-  handleChecked: ChangeEventHandler<HTMLInputElement>;
-  isChecked: String[];
-}
-
 export function Table(props: TableProps) {
-  const [tableData, setTabelData] = useState<Array<SupplierData>>();
+  const [tableData, setTabelData] = useState<Array<TableDataProps>>();
 
   useEffect(() => {
     const ENDPOINT: string = 'http://localhost:8080/api/clientes';
@@ -42,8 +41,7 @@ export function Table(props: TableProps) {
       <table>
         <thead>
           <tr>
-            <td className='td-input'>              
-            </td>
+            <td className='td-input'></td>
             <td>Nome</td>
             <td>Email</td>
             <td>Telefone</td>
@@ -53,7 +51,7 @@ export function Table(props: TableProps) {
         </thead>
         <tbody>
           {tableData &&
-            tableData.map((supplier: SupplierData) => {
+            tableData.map((supplier: TableDataProps) => {
               return (
                 <tr key={supplier.id}>
                   <td className='td-input'>

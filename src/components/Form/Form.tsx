@@ -1,4 +1,4 @@
-import { SupplierDataProps } from '../Header/Header';
+import { SupplierDataProps } from '../../interfaces/interfaces';
 import { Modal } from '../Modal/Modal';
 import './Form.scss';
 
