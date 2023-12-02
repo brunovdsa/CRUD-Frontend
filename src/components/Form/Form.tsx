@@ -102,7 +102,22 @@ export function Form(props: FormProps) {
           </Modal>
         </>
       ) : (
-        'esquece'
+        ''
+      )}
+
+      {props.requestSend === true ? (
+        <>
+          <div
+            className='bg-overlay'
+            onClick={props.handleModalNewClientActive}
+          ></div>
+          <Modal>
+            <h1>Cliente criado com sucesso!</h1>
+            <button onClick={props.handleModalNewClientActive}>Ok.</button>
+          </Modal>
+        </>
+      ) : (
+        ''
       )}
     </form>
   );

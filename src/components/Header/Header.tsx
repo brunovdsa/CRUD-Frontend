@@ -22,6 +22,8 @@ export interface SupplierDataProps {
 export function Header(props: HeaderProps) {
   const [modalNewClientOpen, setModalNewClientOpen] = useState<boolean>(false);
   const [modalEditClientOpen, setModalEditClientOpen] = useState(false);
+  const [modalDeleteClienteOpen, setModalDeleteClienteOpen] =
+    useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
   const [fieldsError, setFieldsError] = useState<boolean>(false);
   const [statusRequest, setStatusRequest] = useState<number>();
@@ -58,6 +60,11 @@ export function Header(props: HeaderProps) {
     e.preventDefault();
   };
 
+  const handleModalDeletSelectedClient = async (e: React.FormEvent) => {
+    setModalDeleteClienteOpen(!modalDeleteClienteOpen);
+    e.preventDefault();
+  };
+
   const inputChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -88,6 +95,10 @@ export function Header(props: HeaderProps) {
         .then((res) => {
           setStatusRequest(res.status);
           setRequestSend(true);
+          supplierData.nome === '' ||
+            supplierData.email === '' ||
+            supplierData.tipoFornecedor === '' ||
+            supplierData.telefone === '';
         })
         .catch((err) => {
           setStatusRequest(err);
@@ -114,7 +125,22 @@ export function Header(props: HeaderProps) {
       });
   };
 
-  console.log(fieldsError);
+  const deleteSelectedCliente = async (e: React.FormEvent) => {
+    const ID = props.checkedId[0];
+    e.preventDefault();
+    await fetch(`http://localhost:8080/api/clientes/${ID}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        setStatusRequest(res.status);
+        // setRequestSend(true);
+      })
+      .catch((err) => {
+        setStatusRequest(err);
+        // setRequestSend(false);
+      });
+  };
+
   return (
     <header className='header-container'>
       <button className='add-supplier-btn' onClick={handleModalNewClientActive}>
@@ -130,6 +156,7 @@ export function Header(props: HeaderProps) {
       <button
         className='delete-supplier-btn'
         disabled={props.toggleEnableButton}
+        onClick={handleModalDeletSelectedClient}
       >
         <DeleteIcon />
       </button>
@@ -171,6 +198,28 @@ export function Header(props: HeaderProps) {
                 requestSend={requestSend}
                 fieldsError={fieldsError}
               />
+            </Modal>
+          </div>
+        </>
+      )}
+      {modalDeleteClienteOpen && (
+        <>
+          <div
+            className='bg-overlay'
+            onClick={handleModalDeletSelectedClient}
+          ></div>
+          <div>
+            <Modal>
+              <>
+                <h1>Atenção!</h1>
+                <span>
+                  Tem certeza que deseja deletar o fornecedor selecionado?
+                </span>
+                <button onClick={handleModalDeletSelectedClient}>
+                  Cancelar
+                </button>
+                <button onClick={deleteSelectedCliente}>Deletar</button>
+              </>
             </Modal>
           </div>
         </>
