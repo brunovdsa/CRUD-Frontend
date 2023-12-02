@@ -1,11 +1,15 @@
+import { SupplierDataProps } from '../Header/Header';
+import { Modal } from '../Modal/Modal';
 import './Form.scss';
-import { clienteDataProps } from '../ModalNewSupplier/ModalNewSupplier';
 
 interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
-  clienteData: clienteDataProps;
+  supplierData: SupplierDataProps;
   inputChanges: any;
   onSubmit: any;
+  requestSend: boolean;
+  fieldsError: boolean;
+  handleModalNewClientActive?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export function Form(props: FormProps) {
@@ -19,11 +23,10 @@ export function Form(props: FormProps) {
               Nome<span>*</span>
             </label>
             <input
-              required
               type='text'
               name='nome'
               placeholder='Nome'
-              value={props.clienteData.nome}
+              value={props.supplierData.nome}
               onChange={props.inputChanges}
             />
           </div>
@@ -32,11 +35,10 @@ export function Form(props: FormProps) {
               Email<span>*</span>
             </label>
             <input
-              required
               type='text'
               name='email'
               placeholder='E-mail'
-              value={props.clienteData.email}
+              value={props.supplierData.email}
               onChange={props.inputChanges}
             />
           </div>
@@ -45,11 +47,10 @@ export function Form(props: FormProps) {
               Tipo de Fornecedor<span>*</span>
             </label>
             <select
-              required
               name='tipoFornecedor'
               id='select-supplier'
               onChange={props.inputChanges}
-              value={props.clienteData.tipoFornecedor}
+              value={props.supplierData.tipoFornecedor}
             >
               <option value=''>Selecione</option>
               <option value='teste'>Atacadista</option>
@@ -60,22 +61,22 @@ export function Form(props: FormProps) {
           </div>
         </div>
       </fieldset>
+
       <fieldset className='form-body'>
         <label>
           Telefones<span>*</span>
         </label>
         <input
-          required
           type='text'
           name='telefone'
           placeholder='Phone'
-          value={props.clienteData.telefone}
+          value={props.supplierData.telefone}
           onChange={props.inputChanges}
         />
         <label htmlFor='comments'>Observações</label>
         <textarea
           name='observacao'
-          value={props.clienteData.observacao}
+          value={props.supplierData.observacao}
           onChange={props.inputChanges}
         />
       </fieldset>
@@ -88,6 +89,21 @@ export function Form(props: FormProps) {
           Salvar
         </button>
       </fieldset>
+
+      {props.fieldsError === true ? (
+        <>
+          <div
+            className='bg-overlay'
+            onClick={props.handleModalNewClientActive}
+          ></div>
+          <Modal>
+            <h1>Atenção!</h1>
+            <span>Por gentileza preencha todos os campos em branco.</span>
+          </Modal>
+        </>
+      ) : (
+        'esquece'
+      )}
     </form>
   );
 }

@@ -4,24 +4,29 @@ import { Header } from './components/Header/Header';
 import { Table } from './components/Table/Table';
 
 function App() {
-  const [isChecked, setIsChecked] = useState<string[]>([]);
+  const [chekedId, setCheckedId] = useState<string[]>([]);
+  const [toggleEnableButton, setToggleEnableButton] = useState<boolean>(true);
 
-  const handleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var updateList = [...isChecked];
+  const handleCheckedId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    var updateList = [...chekedId];
 
     if (e.target.checked) {
-      updateList = [...isChecked, e.target.value];
+      updateList = [...chekedId, e.target.value];
     } else {
-      updateList.splice(isChecked.indexOf(e.target.value), 1);
+      updateList.splice(chekedId.indexOf(e.target.value), 1);
     }
-    setIsChecked(updateList);
+    setCheckedId(updateList);
+
+    chekedId.length >= 1
+      ? setToggleEnableButton(true)
+      : setToggleEnableButton(false);
   };
 
   return (
     <div>
-      <Header isChecked={isChecked} />
+      <Header checkedId={chekedId} toggleEnableButton={toggleEnableButton} />
       <main className='table-wrapper'>
-        <Table handleChecked={handleChecked} isChecked={isChecked} />
+        <Table handleChecked={handleCheckedId} isChecked={chekedId} />
       </main>
     </div>
   );

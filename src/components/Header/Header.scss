@@ -57,6 +57,17 @@
   outline: none;
   border-radius: 6px;
   transition: 0.2s ease;
+
+  &:disabled {
+    border: 1px solid colors.$disabled;
+    color: colors.$disabled;
+    cursor: default;
+    &:hover {
+      border: 1px solid colors.$disabled;
+      color: colors.$disabled;
+    }
+  }
+
   &:hover {
     border: 1px solid colors.$blue;
     color: colors.$blue;

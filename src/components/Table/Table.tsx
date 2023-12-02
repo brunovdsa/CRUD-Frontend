@@ -1,8 +1,8 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import './Tabel.scss';
-export interface ClientData {
+export interface SupplierData {
   map(
-    arg0: (client: ClientData) => import('react/jsx-runtime').JSX.Element
+    arg0: (supplier: SupplierData) => import('react/jsx-runtime').JSX.Element
   ): import('react').ReactNode;
 
   id: number;
@@ -21,7 +21,7 @@ export interface TableProps {
 }
 
 export function Table(props: TableProps) {
-  const [clientData, setClientData] = useState<Array<ClientData>>();
+  const [tableData, setTabelData] = useState<Array<SupplierData>>();
 
   useEffect(() => {
     const ENDPOINT: string = 'http://localhost:8080/api/clientes';
@@ -29,7 +29,7 @@ export function Table(props: TableProps) {
       try {
         const response = await fetch(url);
         const results = await response.json();
-        setClientData(results);
+        setTabelData(results);
       } catch (err) {
         console.log(err);
       }
@@ -42,8 +42,7 @@ export function Table(props: TableProps) {
       <table>
         <thead>
           <tr>
-            <td className='td-input'>
-              <input type='checkbox' />
+            <td className='td-input'>              
             </td>
             <td>Nome</td>
             <td>Email</td>
@@ -53,22 +52,22 @@ export function Table(props: TableProps) {
           </tr>
         </thead>
         <tbody>
-          {clientData &&
-            clientData.map((client: ClientData) => {
+          {tableData &&
+            tableData.map((supplier: SupplierData) => {
               return (
-                <tr key={client.id}>
+                <tr key={supplier.id}>
                   <td className='td-input'>
                     <input
                       type='checkbox'
-                      value={client.id}
+                      value={supplier.id}
                       onChange={props.handleChecked}
                     />
                   </td>
-                  <td>{client.nome}</td>
-                  <td>{client.email}</td>
-                  <td>{client.telefone}</td>
-                  <td>{client.tipoFornecedor}</td>
-                  <td>{client.observacao}</td>
+                  <td>{supplier.nome}</td>
+                  <td>{supplier.email}</td>
+                  <td>{supplier.telefone}</td>
+                  <td>{supplier.tipoFornecedor}</td>
+                  <td>{supplier.observacao}</td>
                 </tr>
               );
             })}
