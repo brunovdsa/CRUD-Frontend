@@ -1,20 +1,16 @@
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import './App.scss';
 import { Header } from './components/Header/Header';
 import { Table } from './components/Table/Table';
 import { SupplierDataProps } from './interfaces/interfaces';
+import { API_URL } from './services/api';
+import { ModalNewSupplier } from './components/Modal/ModalNewSupplier/ModalNewSupplier';
+import { ModalUpdateSupplier } from './components/Modal/UpdateNewSupplier/ModalUpdateSupplier';
+import { ModalDeleteSupplier } from './components/Modal/DeleteSupplier/ModalDeleteSupplier';
 
 function App() {
   const [checkedId, setCheckedId] = useState<string[]>([]);
-  const [toggleEnableButton, setToggleEnableButton] = useState<boolean>(true);
-  const [modalNewSupplierIsActive, setModalNewSupplierIsActive] =
-    useState<boolean>(false);
-  const [modalEditClientIsActive, setModalEditClientIsActive] = useState(false);
-  const [modalDeleteClienteIsActive, setModalDeleteClienteIsActive] =
-    useState(false);
-
-  const [requestSend, setRequestSend] = useState<boolean>(false);
-  const [fieldsError, setFieldsError] = useState<boolean>(false);
+  const [tableData, setTabelData] = useState<Array<SupplierDataProps>>();
   const [supplierData, setSupplierData] = useState<SupplierDataProps>({
     id: 0,
     nome: '',
@@ -23,10 +19,30 @@ function App() {
     tipoFornecedor: 'selecione',
     observacao: '',
   });
+  const [toggleEnableButton, setToggleEnableButton] = useState<boolean>(true);
+  const [modalNewSupplierIsActive, setModalNewSupplierIsActive] =
+    useState<boolean>(false);
+  const [modalUpdateClientIsActive, setModalUpdateClientIsActive] =
+    useState(false);
+  const [modalDeleteClienteIsActive, setModalDeleteClienteIsActive] =
+    useState(false);
 
-  const [statusRequest, setStatusRequest] = useState<number>();
+  //LISTA NA TABLE OS RESULTADOS DE GET
+  const loadTable = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const results = await response.json();
+      setTabelData(results);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // CHECK ID
+  useEffect(() => {
+    loadTable();
+  }, []);
+
+  // CHECK ID CHECKBOX
   const handleCheckedId = (e: React.ChangeEvent<HTMLInputElement>) => {
     var updateList = [...checkedId];
 
@@ -43,16 +59,16 @@ function App() {
   };
 
   // MODAL NOVO CLIENTE
-  const handleModalNewClient = (e: React.MouseEvent<HTMLElement>) => {
+  const handleModalNewSupplier = async () => {
     setModalNewSupplierIsActive(!modalNewSupplierIsActive);
-    e.preventDefault();
+    await loadTable();
   };
 
-  // MODAL EDITAR CLIENTE
-  const handleModalEditClient = (e: React.MouseEvent<HTMLElement>) => {
+  // MODAL UpdateAR CLIENTE
+  const handleModalUpdateSupplier = async () => {
     const ID = checkedId[0];
 
-    const ENDPOINT: string = `http://localhost:8080/api/clientes/${ID}`;
+    const ENDPOINT: string = `${API_URL}/${ID}`;
     const fetchData = async (url: string) => {
       try {
         const response = await fetch(url);
@@ -64,14 +80,14 @@ function App() {
     };
     fetchData(ENDPOINT);
 
-    setModalEditClientIsActive(!modalEditClientIsActive);
-    e.preventDefault();
+    setModalUpdateClientIsActive(!modalUpdateClientIsActive);
+    await loadTable();
   };
 
   //MODAL DELETAR CLIENTE
-  const handleDeleteCliente = (e: React.MouseEvent<HTMLElement>) => {
+  const handleModalDeleteSupplier = async () => {
     setModalDeleteClienteIsActive(!modalDeleteClienteIsActive);
-    e.preventDefault();
+    await loadTable();
   };
 
   //CONTROLE FORM INPUTS
@@ -84,95 +100,46 @@ function App() {
     });
   };
 
-  const createNewClient = async (e: React.FormEvent) => {
-    const body = new FormData();
-    body.set('clienteData', JSON.stringify(supplierData));
-    e.preventDefault();
-
-    if (
-      supplierData.nome === '' ||
-      supplierData.email === '' ||
-      supplierData.tipoFornecedor === '' ||
-      supplierData.telefone === ''
-    ) {
-      setFieldsError(true);
-      return;
-    } else {
-      await fetch('http://localhost:8080/api/clientes', {
-        method: 'POST',
-        body: body,
-      })
-        .then((res) => {
-          setStatusRequest(res.status);
-          setRequestSend(true);
-          supplierData.nome === '' ||
-            supplierData.email === '' ||
-            supplierData.tipoFornecedor === '' ||
-            supplierData.telefone === '';
-        })
-        .catch((err) => {
-          setStatusRequest(err);
-          setRequestSend(false);
-        });
-    }
-  };
-
-  const upDateSelectedClient = async (e: React.FormEvent) => {
-    const body = new FormData();
-    body.set('clienteData', JSON.stringify(supplierData));
-    e.preventDefault();
-    await fetch('http://localhost:8080/api/clientes', {
-      method: 'PUT',
-      body: body,
-    })
-      .then((res) => {
-        setStatusRequest(res.status);
-        setRequestSend(true);
-      })
-      .catch((err) => {
-        setStatusRequest(err);
-        setRequestSend(false);
-      });
-  };
-
-  const deleteSelectedCliente = async (e: any) => {
-    const ID = checkedId[0];
-    // e.preventDefault();
-    await fetch(`http://localhost:8080/api/clientes/${ID}`, {
-      method: 'DELETE',
-    })
-      .then((res) => {
-        setStatusRequest(res.status);
-        // setRequestSend(true);
-      })
-      .catch((err) => {
-        setStatusRequest(err);
-        // setRequestSend(false);
-      });
-    setModalDeleteClienteIsActive(!modalDeleteClienteIsActive);
-  };
-
   return (
     <div>
       <Header
-        checkedId={[]}
-        toggleEnableButton={toggleEnableButton}
-        requestSend={requestSend}
-        fieldsError={fieldsError}
-        modalNewSupplierIsActive={modalNewSupplierIsActive}
-        modalEditClientIsActive={modalEditClientIsActive}
-        modalDeleteClienteIsActive={modalDeleteClienteIsActive}
-        handleModalNewClient={handleModalNewClient}
-        handleModalEditClient={handleModalEditClient}
-        handleDeleteSelectedCliente={handleDeleteCliente}
-        inputChanges={inputChanges}
-        createNewClient={createNewClient}
-        upDateSelectedClient={upDateSelectedClient}
-        deleteSelectedCliente={deleteSelectedCliente}
+        checkedId={checkedId}
         supplierData={supplierData}
+        toggleEnableButton={toggleEnableButton}
+        handleModalNewClient={handleModalNewSupplier}
+        handleModalEditClient={handleModalUpdateSupplier}
+        handleDeleteSelectedCliente={handleModalDeleteSupplier}
       />
       <main className='table-wrapper'>
-        <Table handleChecked={handleCheckedId} isChecked={checkedId} />
+        {tableData && (
+          <Table
+            isChecked={checkedId}
+            tableData={tableData}
+            supplierData={supplierData}
+            handleChecked={handleCheckedId}
+            loadTable={loadTable}
+          />
+        )}
+        <ModalNewSupplier
+          supplierData={supplierData}
+          inputChanges={inputChanges}
+          handleModalNewSupplier={handleModalNewSupplier}
+          modalNewSupplierIsActive={modalNewSupplierIsActive}
+          loadTable={loadTable}
+        />
+        <ModalUpdateSupplier
+          supplierData={supplierData}
+          inputChanges={inputChanges}
+          handleModalUpdateSupplier={handleModalUpdateSupplier}
+          modalUpdateSupplierIsActive={modalUpdateClientIsActive}
+          loadTable={loadTable}
+        />
+        <ModalDeleteSupplier
+          checkedId={checkedId}
+          inputChanges={inputChanges}
+          handleDeleteSelectedSupplier={handleModalDeleteSupplier}
+          modalDeleteSupplierIsActive={modalDeleteClienteIsActive}
+        />
       </main>
     </div>
   );

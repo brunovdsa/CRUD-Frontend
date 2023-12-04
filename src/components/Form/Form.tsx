@@ -1,15 +1,10 @@
 import { SupplierDataProps } from '../../interfaces/interfaces';
-import { Modal } from '../Modal/Modal';
 import './Form.scss';
-
 interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   supplierData: SupplierDataProps;
   inputChanges: any;
   onSubmit: any;
-  requestSend: boolean;
-  fieldsError: boolean;
-  handleModalNewClientActive?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export function Form(props: FormProps) {
@@ -89,36 +84,6 @@ export function Form(props: FormProps) {
           Salvar
         </button>
       </fieldset>
-
-      {props.fieldsError === true ? (
-        <>
-          <div
-            className='bg-overlay'
-            onClick={props.handleModalNewClientActive}
-          ></div>
-          <Modal>
-            <h1>Atenção!</h1>
-            <span>Por gentileza preencha todos os campos em branco.</span>
-          </Modal>
-        </>
-      ) : (
-        ''
-      )}
-
-      {props.requestSend === true ? (
-        <>
-          <div
-            className='bg-overlay'
-            onClick={props.handleModalNewClientActive}
-          ></div>
-          <Modal>
-            <h1>Cliente criado com sucesso!</h1>
-            <button onClick={props.handleModalNewClientActive}>Ok.</button>
-          </Modal>
-        </>
-      ) : (
-        ''
-      )}
     </form>
   );
 }

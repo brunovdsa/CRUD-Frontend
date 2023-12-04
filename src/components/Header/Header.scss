@@ -14,18 +14,6 @@
   button {
     cursor: pointer;
   }
-
-  .bg-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 1;
-  }
 }
 
 .add-supplier-btn {

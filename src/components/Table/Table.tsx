@@ -1,47 +1,36 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import './Tabel.scss';
-interface TableProps {
+import { SupplierDataProps } from '../../interfaces/interfaces';
+
+export interface TableProps {
   handleChecked: ChangeEventHandler<HTMLInputElement>;
   isChecked: String[];
-}
-interface TableDataProps {
-  map(
-    arg0: (supplier: TableDataProps) => import('react/jsx-runtime').JSX.Element
-  ): import('react').ReactNode;
-
-  id: number;
-  nome: string;
-  email: string;
-
-  telefone: string;
-  tipoFornecedor?: any;
-  observacao?: any;
-  length: any;
+  supplierData: SupplierDataProps;
+  tableData: SupplierDataProps[];
+  loadTable: any;
 }
 
 export function Table(props: TableProps) {
-  const [tableData, setTabelData] = useState<Array<TableDataProps>>();
+  const [favList, setFavList] = useState<Array<SupplierDataProps>>([]);
 
-  useEffect(() => {
-    const ENDPOINT: string = 'http://localhost:8080/api/clientes';
-    const fetchData = async (url: string) => {
-      try {
-        const response = await fetch(url);
-        const results = await response.json();
-        setTabelData(results);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData(ENDPOINT);
-  }, []);
+  function handleFavorite(id: number) {
+    const newFavorites = props.tableData.map((item: SupplierDataProps) => {
+      return item.id === id ? { ...item, favorite: !item.favorite } : item;
+    });
+    console.log(id);
+    setFavList(newFavorites);
+  }
+
+  // console.log(favList);
 
   return (
     <div className='table-wrapper'>
       <table>
         <thead>
           <tr>
-            <td className='td-input'></td>
+            <td className='td-input'>
+              <input type='checkbox' />
+            </td>
             <td>Nome</td>
             <td>Email</td>
             <td>Telefone</td>
@@ -50,8 +39,8 @@ export function Table(props: TableProps) {
           </tr>
         </thead>
         <tbody>
-          {tableData &&
-            tableData.map((supplier: TableDataProps) => {
+          {props.tableData &&
+            props.tableData.map((supplier: SupplierDataProps) => {
               return (
                 <tr key={supplier.id}>
                   <td className='td-input'>
@@ -66,6 +55,11 @@ export function Table(props: TableProps) {
                   <td>{supplier.telefone}</td>
                   <td>{supplier.tipoFornecedor}</td>
                   <td>{supplier.observacao}</td>
+                  <td>
+                    <button onClick={() => handleFavorite(supplier.id)}>
+                      ok
+                    </button>
+                  </td>
                 </tr>
               );
             })}
