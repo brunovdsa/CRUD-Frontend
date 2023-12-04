@@ -3,7 +3,7 @@ import './Header.scss';
 import { SupplierDataProps } from '../../interfaces/interfaces';
 
 interface HeaderProps {
-  checkedId: String[];
+  checkedId: number;
   toggleEnableButton: boolean;
   handleModalNewClient: (e: React.MouseEvent<HTMLElement>) => void;
   handleModalEditClient: (e: React.MouseEvent<HTMLElement>) => void;

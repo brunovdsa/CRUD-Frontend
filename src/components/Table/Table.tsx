@@ -1,10 +1,9 @@
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { useState } from 'react';
 import './Tabel.scss';
 import { SupplierDataProps } from '../../interfaces/interfaces';
 
 export interface TableProps {
-  handleChecked: ChangeEventHandler<HTMLInputElement>;
-  isChecked: String[];
+  handleCheckedId: (id: number) => void;
   supplierData: SupplierDataProps;
   tableData: SupplierDataProps[];
   loadTable: any;
@@ -21,8 +20,6 @@ export function Table(props: TableProps) {
     setFavList(newFavorites);
   }
 
-  // console.log(favList);
-
   return (
     <div className='table-wrapper'>
       <table>
@@ -36,6 +33,7 @@ export function Table(props: TableProps) {
             <td>Telefone</td>
             <td>Tipo de fornecedor</td>
             <td>Observação</td>
+            <td>Favoritos</td>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +45,10 @@ export function Table(props: TableProps) {
                     <input
                       type='checkbox'
                       value={supplier.id}
-                      onChange={props.handleChecked}
+                      onChange={() => {
+                        console.log('supplier id: ', supplier.id);
+                        props.handleCheckedId(supplier.id);
+                      }}
                     />
                   </td>
                   <td>{supplier.nome}</td>

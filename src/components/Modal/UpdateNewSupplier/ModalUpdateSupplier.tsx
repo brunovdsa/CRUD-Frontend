@@ -3,6 +3,7 @@ import { SupplierDataProps } from '../../../interfaces/interfaces';
 import { API_URL } from '../../../services/api';
 import { Form } from '../../Form/Form';
 import { Modal } from '../Modal';
+import { RequestResponseModal } from '../RequestResponseModal/RequestResponseModal';
 
 interface ModalUpdateSupplierProps {
   supplierData: SupplierDataProps;
@@ -16,8 +17,9 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
   const [fieldsError, setFieldsError] = useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
 
-  const upDateSelectedSupplier = async () => {
+  const upDateSelectedSupplier = async (e: React.FormEvent) => {
     const body = new FormData();
+    e.preventDefault();
     body.set('clienteData', JSON.stringify(props.supplierData));
 
     if (
@@ -35,9 +37,13 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
             method: 'PUT',
             body: body,
           });
+          setRequestSend(true);
           const results = await response.json();
           console.log(results);
-          setRequestSend(true);
+          props.supplierData.nome === '' ||
+            props.supplierData.email === '' ||
+            props.supplierData.tipoFornecedor === '' ||
+            props.supplierData.telefone === '';
           props.handleModalUpdateSupplier();
           props.loadTable();
         } catch (err) {
@@ -76,16 +82,9 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
         ''
       )} */}
       {requestSend === true ? (
-        <>
-          <div
-            className='bg-overlay'
-            onClick={props.handleModalUpdateSupplier}
-          ></div>
-          <Modal>
-            <h1>Supplier atualizado com sucesso!</h1>
-            <button onClick={props.handleModalUpdateSupplier}></button>
-          </Modal>
-        </>
+        <RequestResponseModal
+          handleModalNewSupplier={props.handleModalUpdateSupplier}
+        />
       ) : (
         ''
       )}

@@ -9,7 +9,7 @@ import { ModalUpdateSupplier } from './components/Modal/UpdateNewSupplier/ModalU
 import { ModalDeleteSupplier } from './components/Modal/DeleteSupplier/ModalDeleteSupplier';
 
 function App() {
-  const [checkedId, setCheckedId] = useState<string[]>([]);
+  const [checkedId, setCheckedId] = useState<number>(0);
   const [tableData, setTabelData] = useState<Array<SupplierDataProps>>();
   const [supplierData, setSupplierData] = useState<SupplierDataProps>({
     id: 0,
@@ -42,18 +42,15 @@ function App() {
     loadTable();
   }, []);
 
-  // CHECK ID CHECKBOX
-  const handleCheckedId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var updateList = [...checkedId];
-
-    if (e.target.checked) {
-      updateList = [...checkedId, e.target.value];
+  // CHECK checkedId CHECKBOX
+  const handleCheckedId = (id: number) => {
+    if (id === checkedId) {
+      setCheckedId(0);
     } else {
-      updateList.splice(checkedId.indexOf(e.target.value), 1);
+      setCheckedId(id);
     }
-    setCheckedId(updateList);
 
-    checkedId.length >= 1
+    checkedId !== 0
       ? setToggleEnableButton(true)
       : setToggleEnableButton(false);
   };
@@ -66,9 +63,7 @@ function App() {
 
   // MODAL UpdateAR CLIENTE
   const handleModalUpdateSupplier = async () => {
-    const ID = checkedId[0];
-
-    const ENDPOINT: string = `${API_URL}/${ID}`;
+    const ENDPOINT: string = `${API_URL}/${checkedId}`;
     const fetchData = async (url: string) => {
       try {
         const response = await fetch(url);
@@ -113,10 +108,9 @@ function App() {
       <main className='table-wrapper'>
         {tableData && (
           <Table
-            isChecked={checkedId}
             tableData={tableData}
             supplierData={supplierData}
-            handleChecked={handleCheckedId}
+            handleCheckedId={handleCheckedId}
             loadTable={loadTable}
           />
         )}
@@ -139,6 +133,7 @@ function App() {
           inputChanges={inputChanges}
           handleDeleteSelectedSupplier={handleModalDeleteSupplier}
           modalDeleteSupplierIsActive={modalDeleteClienteIsActive}
+          handleCheckedId={handleCheckedId}
         />
       </main>
     </div>
