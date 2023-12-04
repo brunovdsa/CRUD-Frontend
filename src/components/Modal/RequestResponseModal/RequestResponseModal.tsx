@@ -3,6 +3,7 @@ import { Modal } from '../Modal';
 
 interface RequestModalProps {
   handleModalNewSupplier: () => void;
+  typeRequest: string;
 }
 
 export function RequestResponseModal(props: RequestModalProps) {
@@ -23,7 +24,7 @@ export function RequestResponseModal(props: RequestModalProps) {
             onClick={handleRequestResponseModal}
           ></div>
           <Modal>
-            <h1>Supplier atualizado com sucesso!</h1>
+            <h1>{`Supplier ${props.typeRequest} com sucesso!`}</h1>
             <button
               onClick={() =>
                 setModalRequestResponseIsActive(!modalRequestResponseIsActive)

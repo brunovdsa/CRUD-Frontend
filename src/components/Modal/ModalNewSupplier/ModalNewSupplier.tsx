@@ -51,6 +51,7 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
         }
       };
       fetchData(API_URL);
+      setRequestSend(false);
     }
   };
 
@@ -74,12 +75,11 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
           </div>
         </>
       )}
-
       {/* {fieldsError === true ? <RequestResponseModal} /> : ''} */}
-
       {requestSend === true ? (
         <RequestResponseModal
           handleModalNewSupplier={props.handleModalNewSupplier}
+          typeRequest={'criado'}
         />
       ) : (
         ''

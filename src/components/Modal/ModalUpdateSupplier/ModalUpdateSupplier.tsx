@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SupplierDataProps } from '../../../interfaces/interfaces';
 import { API_URL } from '../../../services/api';
 import { Form } from '../../Form/Form';
@@ -40,10 +40,6 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           setRequestSend(true);
           const results = await response.json();
           console.log(results);
-          props.supplierData.nome === '' ||
-            props.supplierData.email === '' ||
-            props.supplierData.tipoFornecedor === '' ||
-            props.supplierData.telefone === '';
           props.handleModalUpdateSupplier();
           props.loadTable();
         } catch (err) {
@@ -51,6 +47,7 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
         }
       };
       fetchData(API_URL);
+      setRequestSend(false);
     }
   };
 
@@ -84,6 +81,7 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
       {requestSend === true ? (
         <RequestResponseModal
           handleModalNewSupplier={props.handleModalUpdateSupplier}
+          typeRequest={'atualizado'}
         />
       ) : (
         ''

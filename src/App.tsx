@@ -1,11 +1,11 @@
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.scss';
 import { Header } from './components/Header/Header';
 import { Table } from './components/Table/Table';
 import { SupplierDataProps } from './interfaces/interfaces';
 import { API_URL } from './services/api';
 import { ModalNewSupplier } from './components/Modal/ModalNewSupplier/ModalNewSupplier';
-import { ModalUpdateSupplier } from './components/Modal/UpdateNewSupplier/ModalUpdateSupplier';
+import { ModalUpdateSupplier } from './components/Modal/ModalUpdateSupplier/ModalUpdateSupplier';
 import { ModalDeleteSupplier } from './components/Modal/DeleteSupplier/ModalDeleteSupplier';
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
     telefone: '',
     tipoFornecedor: 'selecione',
     observacao: '',
+    favorite: false,
   });
   const [toggleEnableButton, setToggleEnableButton] = useState<boolean>(true);
   const [modalNewSupplierIsActive, setModalNewSupplierIsActive] =
@@ -42,6 +43,26 @@ function App() {
     loadTable();
   }, []);
 
+  function toggleIsFavorite(id: number) {
+    if (id === checkedId) {
+      setCheckedId(0);
+    } else {
+      setCheckedId(id);
+    }
+    if (tableData !== undefined) {
+      let firstItem: any;
+      console.log('FIRST ITEM: ', firstItem);
+      const filteredItems = tableData.filter((item) => {
+        if (item.id === id) {
+          firstItem = [item];
+          return false;
+        }
+        return true;
+      });
+      setTabelData([...firstItem, ...filteredItems]);
+    }
+  }
+
   // CHECK checkedId CHECKBOX
   const handleCheckedId = (id: number) => {
     if (id === checkedId) {
@@ -57,13 +78,22 @@ function App() {
 
   // MODAL NOVO CLIENTE
   const handleModalNewSupplier = async () => {
+    setSupplierData({
+      id: 0,
+      nome: '',
+      email: '',
+      telefone: '',
+      tipoFornecedor: 'selecione',
+      observacao: '',
+      favorite: false,
+    });
     setModalNewSupplierIsActive(!modalNewSupplierIsActive);
+
     await loadTable();
   };
 
   // MODAL UpdateAR CLIENTE
   const handleModalUpdateSupplier = async () => {
-    const ENDPOINT: string = `${API_URL}/${checkedId}`;
     const fetchData = async (url: string) => {
       try {
         const response = await fetch(url);
@@ -73,7 +103,7 @@ function App() {
         console.log(err);
       }
     };
-    fetchData(ENDPOINT);
+    fetchData(`${API_URL}/${checkedId}`);
 
     setModalUpdateClientIsActive(!modalUpdateClientIsActive);
     await loadTable();
@@ -112,6 +142,7 @@ function App() {
             supplierData={supplierData}
             handleCheckedId={handleCheckedId}
             loadTable={loadTable}
+            toggleIsFavorite={toggleIsFavorite}
           />
         )}
         <ModalNewSupplier

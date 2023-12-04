@@ -5,5 +5,5 @@ export interface SupplierDataProps {
   telefone: string;
   tipoFornecedor?: string;
   observacao?: string;
-  favorite?: any;
+  favorite?: boolean;
 }

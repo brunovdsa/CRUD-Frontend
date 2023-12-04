@@ -7,19 +7,10 @@ export interface TableProps {
   supplierData: SupplierDataProps;
   tableData: SupplierDataProps[];
   loadTable: any;
+  toggleIsFavorite: (id: number) => void;
 }
 
 export function Table(props: TableProps) {
-  const [favList, setFavList] = useState<Array<SupplierDataProps>>([]);
-
-  function handleFavorite(id: number) {
-    const newFavorites = props.tableData.map((item: SupplierDataProps) => {
-      return item.id === id ? { ...item, favorite: !item.favorite } : item;
-    });
-    console.log(id);
-    setFavList(newFavorites);
-  }
-
   return (
     <div className='table-wrapper'>
       <table>
@@ -46,7 +37,6 @@ export function Table(props: TableProps) {
                       type='checkbox'
                       value={supplier.id}
                       onChange={() => {
-                        console.log('supplier id: ', supplier.id);
                         props.handleCheckedId(supplier.id);
                       }}
                     />
@@ -57,9 +47,11 @@ export function Table(props: TableProps) {
                   <td>{supplier.tipoFornecedor}</td>
                   <td>{supplier.observacao}</td>
                   <td>
-                    <button onClick={() => handleFavorite(supplier.id)}>
-                      ok
-                    </button>
+                    <input
+                      type='checkbox'
+                      value={supplier.id}
+                      onChange={() => props.toggleIsFavorite(supplier.id)}
+                    />
                   </td>
                 </tr>
               );
