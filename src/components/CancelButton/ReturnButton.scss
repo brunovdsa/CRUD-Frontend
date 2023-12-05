@@ -1,0 +1,28 @@
+@use '../../styles/abstracts/colors';
+@use '../../styles/abstracts/fonts';
+
+.btn-cancel {
+  width: 6rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  font-weight: fonts.$regular;
+  font-size: fonts.$text;
+}
+.btn-cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: colors.$white;
+  color: colors.$black;
+  cursor: pointer;
+
+  border: 1px solid colors.$black;
+
+  outline: none;
+
+  &:hover {
+    border: 1px solid colors.$blue;
+    color: colors.$blue;
+  }
+}

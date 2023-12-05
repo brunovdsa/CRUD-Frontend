@@ -1,4 +1,6 @@
 import { SupplierDataProps } from '../../interfaces/interfaces';
+import { ReturnButton } from '../CancelButton/ReturnButton';
+import { SubmitButton } from '../SubmitButton/SubmitButton';
 import './Form.scss';
 interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
@@ -77,12 +79,8 @@ export function Form(props: FormProps) {
       </fieldset>
 
       <fieldset className='form-footer'>
-        <button onClick={props.onClick} className='btn-cancel'>
-          Cancelar
-        </button>
-        <button type='submit' className='btn-submit-form'>
-          Salvar
-        </button>
+        <ReturnButton action={'Cancelar'} onClick={props.onClick} />
+        <SubmitButton action={'Salvar'} />
       </fieldset>
     </form>
   );

@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Modal } from '../Modal';
+import { SubmitButton } from '../../SubmitButton/SubmitButton';
+import './RequestResponseModal.scss';
+import { SuccessIcon } from '../../Icons/Icons';
 
 interface RequestModalProps {
   handleModalNewSupplier: () => void;
@@ -24,12 +27,16 @@ export function RequestResponseModal(props: RequestModalProps) {
             onClick={handleRequestResponseModal}
           ></div>
           <Modal>
-            <h1>{`Supplier ${props.typeRequest} com sucesso!`}</h1>
-            <button
-              onClick={() =>
-                setModalRequestResponseIsActive(!modalRequestResponseIsActive)
-              }
-            ></button>
+            <div className='container-modal-request'>
+              <SuccessIcon style={{ color: '#0065b3' }} />
+              <h1 className='title'>{`Fornecedor ${props.typeRequest} com sucesso!`}</h1>
+              <SubmitButton
+                onClick={() =>
+                  setModalRequestResponseIsActive(!modalRequestResponseIsActive)
+                }
+                action={'Ok'}
+              />
+            </div>
           </Modal>
         </>
       )}

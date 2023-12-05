@@ -1,0 +1,22 @@
+@use '../../styles/abstracts/colors';
+@use '../../styles/abstracts/fonts';
+
+.btn-submit-form {
+  width: 6rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  font-weight: fonts.$regular;
+  font-size: fonts.$text;
+}
+
+.btn-submit-form {
+  border: none;
+  outline: none;
+  background-color: colors.$blue;
+  color: colors.$white;
+
+  &:hover {
+    background-color: colors.$hover-blue;
+  }
+}

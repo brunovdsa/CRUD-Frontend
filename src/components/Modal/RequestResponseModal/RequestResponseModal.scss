@@ -1,0 +1,20 @@
+@use '../../../styles/abstracts/colors';
+@use '../../../styles/abstracts/fonts';
+
+.container-modal-request {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  padding: 8rem 0;
+
+  svg {
+    height: 5rem;
+  }
+}
+
+.title {
+  font-size: fonts.$primary;
+  font-weight: fonts.$bold;
+  padding: 1rem;
+}
