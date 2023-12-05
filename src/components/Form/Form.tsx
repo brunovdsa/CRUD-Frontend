@@ -7,13 +7,14 @@ interface FormProps {
   supplierData: SupplierDataProps;
   inputChanges: any;
   onSubmit: any;
+  typeAction: string;
 }
 
 export function Form(props: FormProps) {
   return (
     <form className='form' id='form' onSubmit={props.onSubmit}>
       <fieldset className='form-header'>
-        <h1 className='title'>Novo Fornecedor</h1>
+        <h1 className='title'>{`${props.typeAction} Fornecedor`}</h1>
         <div className='inputs-header'>
           <div>
             <label htmlFor='name'>

@@ -66,6 +66,7 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
                 supplierData={props.supplierData}
                 inputChanges={props.inputChanges}
                 onSubmit={upDateSelectedSupplier}
+                typeAction={'Atualizar'}
               />
             </Modal>
           </div>

@@ -15,11 +15,16 @@ table {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
+  -moz-border-radius: 10px !important;
+  border-collapse: separate;
+  border-radius: 10px;
+  box-shadow: colors.$box-shadow;
 
   thead,
   tbody,
   tfoot {
     background-color: colors.$white;
+    outline: 0;
   }
 
   thead {
@@ -27,13 +32,34 @@ table {
       width: 4rem;
     }
   }
+  tbody tr:nth-child(odd) {
+    background-color: colors.$disabled;
+  }
 
   td {
     height: 2rem;
-    padding: 0.3rem;
+    padding: 0.5rem;
+    border-right: solid 1px colors.$disabled;
+  }
+  td:last-child {
+    border-right: none;
+    border-bottom: none;
   }
 
   .td-input {
     width: 1rem;
   }
+}
+
+table th:first-child {
+  -moz-border-radius: 10px 0 0 0 !important;
+}
+table th:last-child {
+  -moz-border-radius: 0 10px 0 0 !important;
+}
+table tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 10px !important;
+}
+table tr:last-child td:last-child {
+  -moz-border-radius: 0 0 10px 0 !important;
 }

@@ -70,6 +70,7 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
                 supplierData={props.supplierData}
                 inputChanges={props.inputChanges}
                 onSubmit={createNewSupplier}
+                typeAction={'Novo'}
               />
             </Modal>
           </div>

@@ -13,7 +13,7 @@ export interface TableProps {
 export function Table(props: TableProps) {
   return (
     <div className='table-wrapper'>
-      <table>
+      <table cellPadding={0} cellSpacing={0}>
         <thead>
           <tr>
             <td className='td-input'>
