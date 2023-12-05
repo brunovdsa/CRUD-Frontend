@@ -19,6 +19,10 @@
   box-shadow: colors.$box-shadow;
   border-radius: 10px;
 
+  button {
+    cursor: pointer;
+  }
+
   padding: 1rem;
   width: 85%;
 

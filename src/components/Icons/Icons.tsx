@@ -1,12 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCircle,
   faCircleCheck,
   faExclamationTriangle,
   faPencil,
-  faTriangleCircleSquare,
+  faStar,
+  faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons/faTrashCan';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface IconProps {
   style?: React.CSSProperties;
@@ -26,4 +25,8 @@ export function ExclamationIcon(props: IconProps) {
 
 export function SuccessIcon(props: IconProps) {
   return <FontAwesomeIcon icon={faCircleCheck} style={props.style} />;
+}
+
+export function SolidStar(props: IconProps) {
+  return <FontAwesomeIcon icon={faStar} style={props.style} />;
 }

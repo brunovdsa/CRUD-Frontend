@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SupplierDataProps } from '../../../interfaces/interfaces';
 import { API_URL } from '../../../services/api';
 import { Form } from '../../Form/Form';
 import { Modal } from '../Modal';
 import { RequestResponseModal } from '../RequestResponseModal/RequestResponseModal';
+import { FieldsErrorModal } from '../FildsErrorModal/FieldsErrorModal';
 
 interface ModalUpdateSupplierProps {
   supplierData: SupplierDataProps;
@@ -72,16 +73,10 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           </div>
         </>
       )}
-      {/* {fieldsError === true ? (
-        <RequestResponseModal
-          handleModalNewSupplier={props.handleModalUpdateSupplier}
-        />
-      ) : (
-        ''
-      )} */}
+      {fieldsError === true ? <FieldsErrorModal /> : ''}
       {requestSend === true ? (
         <RequestResponseModal
-          handleModalNewSupplier={props.handleModalUpdateSupplier}
+          handleModal={props.handleModalUpdateSupplier}
           typeRequest={'atualizado'}
         />
       ) : (

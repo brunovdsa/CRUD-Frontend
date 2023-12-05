@@ -5,7 +5,7 @@ import './RequestResponseModal.scss';
 import { SuccessIcon } from '../../Icons/Icons';
 
 interface RequestModalProps {
-  handleModalNewSupplier: () => void;
+  handleModal: () => void;
   typeRequest: string;
 }
 
@@ -14,7 +14,7 @@ export function RequestResponseModal(props: RequestModalProps) {
     useState(true);
 
   const handleRequestResponseModal = () => {
-    props.handleModalNewSupplier();
+    props.handleModal();
     setModalRequestResponseIsActive(!modalRequestResponseIsActive);
   };
 

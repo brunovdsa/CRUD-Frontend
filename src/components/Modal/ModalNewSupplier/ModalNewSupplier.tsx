@@ -4,6 +4,7 @@ import { Form } from '../../Form/Form';
 import { Modal } from '../Modal';
 import { API_URL } from '../../../services/api';
 import { RequestResponseModal } from '../RequestResponseModal/RequestResponseModal';
+import { FieldsErrorModal } from '../FildsErrorModal/FieldsErrorModal';
 
 interface ModalNewSupplierProps {
   supplierData: SupplierDataProps;
@@ -28,7 +29,7 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
       props.supplierData.tipoFornecedor === '' ||
       props.supplierData.telefone === ''
     ) {
-      setFieldsError(true);
+      setFieldsError(!fieldsError);
       return;
     } else {
       const fetchData = async (url: string) => {
@@ -76,10 +77,10 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
           </div>
         </>
       )}
-      {/* {fieldsError === true ? <RequestResponseModal} /> : ''} */}
+      {fieldsError === true ? <FieldsErrorModal /> : ''}
       {requestSend === true ? (
         <RequestResponseModal
-          handleModalNewSupplier={props.handleModalNewSupplier}
+          handleModal={props.handleModalNewSupplier}
           typeRequest={'criado'}
         />
       ) : (

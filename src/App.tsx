@@ -55,6 +55,7 @@ function App() {
       const filteredItems = tableData.filter((item) => {
         if (item.id === id) {
           firstItem = [item];
+          console.log(item);
           return false;
         }
         return true;
