@@ -6,7 +6,7 @@ import { SupplierDataProps } from './interfaces/interfaces';
 import { API_URL } from './services/api';
 import { ModalNewSupplier } from './components/Modal/ModalNewSupplier/ModalNewSupplier';
 import { ModalUpdateSupplier } from './components/Modal/ModalUpdateSupplier/ModalUpdateSupplier';
-import { ModalDeleteSupplier } from './components/Modal/DeleteSupplier/ModalDeleteSupplier';
+import { ModalDeleteSupplier } from './components/Modal/ModalDeleteSupplier/ModalDeleteSupplier';
 
 function App() {
   const [checkedId, setCheckedId] = useState<number>(0);
@@ -119,7 +119,7 @@ function App() {
   //CONTROLE FORM INPUTS
   const inputChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
+    console.log(value);
     setSupplierData({
       ...supplierData,
       [e.target.name]: value,

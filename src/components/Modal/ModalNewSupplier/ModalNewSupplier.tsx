@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SupplierDataProps } from '../../../interfaces/interfaces';
 import { Form } from '../../Form/Form';
 import { Modal } from '../Modal';
@@ -16,9 +16,20 @@ interface ModalNewSupplierProps {
 
 export function ModalNewSupplier(props: ModalNewSupplierProps) {
   const [fieldsError, setFieldsError] = useState<boolean>(false);
+  const [emptyFiledsError, setEmptyFieldsError] = useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
+  // const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
 
   const createNewSupplier = async (e: React.FormEvent) => {
+    // let regEmail =
+    //   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    // if (regEmail.test(props.supplierData.email)) {
+    //   setEmailIsValid(true);
+    // } else {
+    //   setEmailIsValid(false);
+    // }
+
     const body = new FormData();
     e.preventDefault();
     body.set('clienteData', JSON.stringify(props.supplierData));
@@ -29,7 +40,8 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
       props.supplierData.tipoFornecedor === '' ||
       props.supplierData.telefone === ''
     ) {
-      setFieldsError(!fieldsError);
+      setFieldsError(true);
+      setEmptyFieldsError(true);
       return;
     } else {
       const fetchData = async (url: string) => {
@@ -39,16 +51,22 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
             body: body,
           });
           const results = await response.json();
-          console.log(results);
-          props.supplierData.nome === '' ||
-            props.supplierData.email === '' ||
-            props.supplierData.tipoFornecedor === '' ||
-            props.supplierData.telefone === '';
-          setRequestSend(true);
-          props.handleModalNewSupplier();
-          props.loadTable();
+          if (results.status === 500) {
+            console.log(results.status);
+            setEmptyFieldsError(false);
+          } else {
+            props.supplierData.nome === '' ||
+              props.supplierData.email === '' ||
+              props.supplierData.tipoFornecedor === '' ||
+              props.supplierData.telefone === '';
+            setFieldsError(false);
+            setEmptyFieldsError(false);
+            props.handleModalNewSupplier();
+            props.loadTable();
+            setRequestSend(true);
+          }
         } catch (err) {
-          console.log(err);
+          alert(err);
         }
       };
       fetchData(API_URL);
@@ -56,6 +74,8 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
     }
   };
 
+  console.log('FIELDS ERROR: ', fieldsError);
+  console.log('EMPTY FIELDS ERROR ERROR: ', emptyFiledsError);
   return (
     <>
       {props.modalNewSupplierIsActive && (
@@ -77,7 +97,17 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
           </div>
         </>
       )}
-      {fieldsError === true ? <FieldsErrorModal /> : ''}
+      {fieldsError === true && emptyFiledsError === true ? (
+        <FieldsErrorModal errorDescription='Preencha todos os campos em branco!' />
+      ) : (
+        ''
+      )}
+
+      {fieldsError === true && emptyFiledsError === false ? (
+        <FieldsErrorModal errorDescription='Email já cadastrado!' />
+      ) : (
+        ''
+      )}
       {requestSend === true ? (
         <RequestResponseModal
           handleModal={props.handleModalNewSupplier}

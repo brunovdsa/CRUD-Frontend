@@ -3,7 +3,11 @@ import { Modal } from '../Modal';
 import { ExclamationIcon } from '../../Icons/Icons';
 import { SubmitButton } from '../../SubmitButton/SubmitButton';
 
-export function FieldsErrorModal() {
+interface FieldsErrorModalProps {
+  errorDescription: string;
+}
+
+export function FieldsErrorModal(props: FieldsErrorModalProps) {
   const [modalFieldsErrorIsActive, setModalFieldsErrorIsActive] =
     useState(true);
 
@@ -20,7 +24,7 @@ export function FieldsErrorModal() {
             <div className='container-modal-request'>
               <ExclamationIcon style={{ color: '#0065b3' }} />
               <h1 className='title'>Atenção!</h1>
-              <span>Preencha todos os campos em branco!</span>
+              <span>{props.errorDescription}</span>
               <SubmitButton
                 onClick={() => handleModalFieldsError()}
                 action={'Ok'}

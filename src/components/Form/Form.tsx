@@ -1,6 +1,7 @@
 import { SupplierDataProps } from '../../interfaces/interfaces';
 import { ReturnButton } from '../CancelButton/ReturnButton';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
+import { IMaskInput } from 'react-imask';
 import './Form.scss';
 interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
@@ -51,7 +52,7 @@ export function Form(props: FormProps) {
               value={props.supplierData.tipoFornecedor}
             >
               <option value=''>Selecione</option>
-              <option value='teste'>Atacadista</option>
+              <option value='Atacadista'>Atacadista</option>
               <option value='Distribuidor'>Distribuidor</option>
               <option value='Terceiro'>Terceiro</option>
               <option value='Varejista'>Varejista</option>
@@ -64,10 +65,11 @@ export function Form(props: FormProps) {
         <label>
           Telefones<span>*</span>
         </label>
-        <input
+        <IMaskInput
           type='text'
           name='telefone'
           placeholder='Phone'
+          mask={'(00) 0 0000-0000'}
           value={props.supplierData.telefone}
           onChange={props.inputChanges}
         />
@@ -81,7 +83,7 @@ export function Form(props: FormProps) {
 
       <fieldset className='form-footer'>
         <ReturnButton action={'Cancelar'} onClick={props.onClick} />
-        <SubmitButton action={'Salvar'} />
+        <SubmitButton action={'Salvar'} onClick={props.onSubmit} />
       </fieldset>
     </form>
   );

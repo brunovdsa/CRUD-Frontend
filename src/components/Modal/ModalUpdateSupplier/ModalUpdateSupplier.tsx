@@ -16,6 +16,7 @@ interface ModalUpdateSupplierProps {
 
 export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
   const [fieldsError, setFieldsError] = useState<boolean>(false);
+  const [emptyFiledsError, setEmptyFieldsError] = useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
 
   const upDateSelectedSupplier = async (e: React.FormEvent) => {
@@ -30,6 +31,7 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
       props.supplierData.telefone === ''
     ) {
       setFieldsError(true);
+      setEmptyFieldsError(true);
       return;
     } else {
       const fetchData = async (url: string) => {
@@ -40,11 +42,19 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           });
           setRequestSend(true);
           const results = await response.json();
-          console.log(results);
-          props.handleModalUpdateSupplier();
-          props.loadTable();
+          if (results.status === 500) {
+            console.log(results.status);
+            setEmptyFieldsError(false);
+            console.log(results);
+          } else {
+            props.handleModalUpdateSupplier();
+            props.loadTable();
+            setFieldsError(false);
+            setEmptyFieldsError(false);
+            setRequestSend(true);
+          }
         } catch (err) {
-          console.log(err);
+          alert(err);
         }
       };
       fetchData(API_URL);
@@ -73,7 +83,17 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           </div>
         </>
       )}
-      {fieldsError === true ? <FieldsErrorModal /> : ''}
+      {fieldsError === true && emptyFiledsError === true ? (
+        <FieldsErrorModal errorDescription='Preencha todos os campos em branco!' />
+      ) : (
+        ''
+      )}
+
+      {fieldsError === true && emptyFiledsError === false ? (
+        <FieldsErrorModal errorDescription='Email já cadastrado!' />
+      ) : (
+        ''
+      )}
       {requestSend === true ? (
         <RequestResponseModal
           handleModal={props.handleModalUpdateSupplier}
