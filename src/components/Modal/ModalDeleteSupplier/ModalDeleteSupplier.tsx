@@ -7,10 +7,10 @@ import './ModalDeleteSupplier.scss';
 
 interface ModalDeleteSupplierProps {
   modalDeleteSupplierIsActive: boolean;
-  inputChanges: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteSelectedSupplier: () => void;
   checkedId: number;
+  inputChanges: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckedId: (id: number) => void;
+  onClick: () => void;
 }
 
 export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
@@ -21,7 +21,7 @@ export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
     })
       .then((res) => {
         console.log(res);
-        props.handleDeleteSelectedSupplier();
+        props.onClick();
         props.handleCheckedId(0);
       })
       .catch((err) => {
@@ -33,10 +33,7 @@ export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
     <>
       {props.modalDeleteSupplierIsActive && (
         <>
-          <div
-            className='bg-overlay'
-            onClick={props.handleDeleteSelectedSupplier}
-          ></div>
+          <div className='bg-overlay' onClick={props.onClick}></div>
           <div>
             <Modal>
               <div className='container-modal-delete'>
@@ -48,10 +45,7 @@ export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
                   Tem certeza que deseja deletar o fornecedor selecionado?
                 </span>
                 <div className='footer-modal-delete'>
-                  <ReturnButton
-                    action={'Cancelar'}
-                    onClick={props.handleDeleteSelectedSupplier}
-                  />
+                  <ReturnButton action={'Cancelar'} onClick={props.onClick} />
                   <SubmitButton
                     action={'Deletar'}
                     onClick={deleteSelectedSupplier}

@@ -10,7 +10,7 @@ interface ModalUpdateSupplierProps {
   supplierData: SupplierDataProps;
   modalUpdateSupplierIsActive: boolean;
   inputChanges: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleModalUpdateSupplier: () => void;
+  onClick: () => void;
   loadTable: () => void;
 }
 
@@ -47,7 +47,7 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
             setEmptyFieldsError(false);
             console.log(results);
           } else {
-            props.handleModalUpdateSupplier();
+            props.onClick();
             props.loadTable();
             setFieldsError(false);
             setEmptyFieldsError(false);
@@ -66,14 +66,11 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
     <>
       {props.modalUpdateSupplierIsActive && (
         <>
-          <div
-            className='bg-overlay'
-            onClick={props.handleModalUpdateSupplier}
-          ></div>
+          <div className='bg-overlay' onClick={props.onClick}></div>
           <div>
             <Modal>
               <Form
-                onClick={props.handleModalUpdateSupplier}
+                onClick={props.onClick}
                 supplierData={props.supplierData}
                 inputChanges={props.inputChanges}
                 onSubmit={upDateSelectedSupplier}
@@ -96,7 +93,7 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
       )}
       {requestSend === true ? (
         <RequestResponseModal
-          handleModal={props.handleModalUpdateSupplier}
+          handleModal={props.onClick}
           typeRequest={'atualizado'}
         />
       ) : (

@@ -5,29 +5,32 @@ import { SupplierDataProps } from '../../interfaces/interfaces';
 interface HeaderProps {
   checkedId: number;
   toggleEnableButton: boolean;
-  handleModalNewClient: (e: React.MouseEvent<HTMLElement>) => void;
-  handleModalEditClient: (e: React.MouseEvent<HTMLElement>) => void;
-  handleDeleteSelectedCliente: (e: React.MouseEvent<HTMLElement>) => void;
+  handleModalNewSupplier: (e: React.MouseEvent<HTMLElement>) => void;
+  handleModalEditSupplier: (e: React.MouseEvent<HTMLElement>) => void;
+  handleDeleteSelectedSupplier: (e: React.MouseEvent<HTMLElement>) => void;
   supplierData: SupplierDataProps;
 }
 
 export function Header(props: HeaderProps) {
   return (
     <header className='header-container'>
-      <button className='add-supplier-btn' onClick={props.handleModalNewClient}>
+      <button
+        className='add-supplier-btn'
+        onClick={props.handleModalNewSupplier}
+      >
         Novo
       </button>
       <button
         className='edit-supplier-btn'
         disabled={props.toggleEnableButton}
-        onClick={props.handleModalEditClient}
+        onClick={props.handleModalEditSupplier}
       >
         <EditIcon />
       </button>
       <button
         className='delete-supplier-btn'
         disabled={props.toggleEnableButton}
-        onClick={props.handleDeleteSelectedCliente}
+        onClick={props.handleDeleteSelectedSupplier}
       >
         <DeleteIcon />
       </button>

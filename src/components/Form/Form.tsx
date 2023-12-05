@@ -7,7 +7,7 @@ interface FormProps {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   supplierData: SupplierDataProps;
   inputChanges: any;
-  onSubmit: any;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
   typeAction: string;
 }
 
@@ -83,7 +83,7 @@ export function Form(props: FormProps) {
 
       <fieldset className='form-footer'>
         <ReturnButton action={'Cancelar'} onClick={props.onClick} />
-        <SubmitButton action={'Salvar'} onClick={props.onSubmit} />
+        <SubmitButton action={'Salvar'} />
       </fieldset>
     </form>
   );

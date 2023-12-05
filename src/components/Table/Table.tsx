@@ -7,14 +7,13 @@ export interface TableProps {
   handleCheckedId: (id: number) => void;
   supplierData: SupplierDataProps;
   tableData: SupplierDataProps[];
-  loadTable: any;
   toggleIsFavorite: (id: number) => void;
 }
 
 export function Table(props: TableProps) {
   const [isPressed, setIsPressed] = useState(false);
 
-  const handlechange = (e: any) => {
+  const handlechange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setIsPressed(!isPressed);
     if (e.currentTarget.className == 'fav-disabled') {
       e.currentTarget.className = 'fav-enabled';

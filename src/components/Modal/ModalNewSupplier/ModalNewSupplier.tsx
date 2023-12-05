@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SupplierDataProps } from '../../../interfaces/interfaces';
 import { Form } from '../../Form/Form';
 import { Modal } from '../Modal';
@@ -10,7 +10,7 @@ interface ModalNewSupplierProps {
   supplierData: SupplierDataProps;
   modalNewSupplierIsActive: boolean;
   inputChanges: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleModalNewSupplier: () => void;
+  onClick: () => void;
   loadTable: () => void;
 }
 
@@ -62,7 +62,7 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
               props.supplierData.telefone === '';
             setFieldsError(false);
             setEmptyFieldsError(false);
-            props.handleModalNewSupplier();
+            props.onClick();
             props.loadTable();
             setRequestSend(true);
           }
@@ -81,14 +81,11 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
     <>
       {props.modalNewSupplierIsActive && (
         <>
-          <div
-            className='bg-overlay'
-            onClick={props.handleModalNewSupplier}
-          ></div>
+          <div className='bg-overlay' onClick={props.onClick}></div>
           <div>
             <Modal>
               <Form
-                onClick={props.handleModalNewSupplier}
+                onClick={props.onClick}
                 supplierData={props.supplierData}
                 inputChanges={props.inputChanges}
                 onSubmit={createNewSupplier}
@@ -111,7 +108,7 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
       )}
       {requestSend === true ? (
         <RequestResponseModal
-          handleModal={props.handleModalNewSupplier}
+          handleModal={props.onClick}
           typeRequest={'criado'}
         />
       ) : (

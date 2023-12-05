@@ -23,9 +23,9 @@ function App() {
   const [toggleEnableButton, setToggleEnableButton] = useState<boolean>(true);
   const [modalNewSupplierIsActive, setModalNewSupplierIsActive] =
     useState<boolean>(false);
-  const [modalUpdateClientIsActive, setModalUpdateClientIsActive] =
+  const [modalUpdateSupplierIsActive, setModalUpdateSupplierIsActive] =
     useState(false);
-  const [modalDeleteClienteIsActive, setModalDeleteClienteIsActive] =
+  const [modalDeleteSupplierIsActive, setModalDeleteSupplierIsActive] =
     useState(false);
 
   //LISTA NA TABLE OS RESULTADOS DE GET
@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     loadTable();
   }, []);
-
+  //SETA FAVORITO
   function toggleIsFavorite(id: number) {
     if (id === checkedId) {
       setCheckedId(0);
@@ -64,7 +64,6 @@ function App() {
       setTabelData([...firstItem, ...filteredItems]);
     }
   }
-
   // CHECK checkedId CHECKBOX
   const handleCheckedId = (id: number) => {
     if (id === checkedId) {
@@ -77,8 +76,7 @@ function App() {
       ? setToggleEnableButton(true)
       : setToggleEnableButton(false);
   };
-
-  // MODAL NOVO CLIENTE
+  // MODAL NOVO FORNECEDOR
   const handleModalNewSupplier = async () => {
     setSupplierData({
       id: 0,
@@ -93,8 +91,7 @@ function App() {
 
     await loadTable();
   };
-
-  // MODAL UpdateAR CLIENTE
+  // MODAL UPDATE FORNECEDOR
   const handleModalUpdateSupplier = async () => {
     const fetchData = async (url: string) => {
       try {
@@ -107,16 +104,14 @@ function App() {
     };
     fetchData(`${API_URL}/${checkedId}`);
 
-    setModalUpdateClientIsActive(!modalUpdateClientIsActive);
+    setModalUpdateSupplierIsActive(!modalUpdateSupplierIsActive);
     await loadTable();
   };
-
-  //MODAL DELETAR CLIENTE
+  //MODAL DELETAR FORNECEDOR
   const handleModalDeleteSupplier = async () => {
-    setModalDeleteClienteIsActive(!modalDeleteClienteIsActive);
+    setModalDeleteSupplierIsActive(!modalDeleteSupplierIsActive);
     await loadTable();
   };
-
   //CONTROLE FORM INPUTS
   const inputChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -133,9 +128,9 @@ function App() {
         checkedId={checkedId}
         supplierData={supplierData}
         toggleEnableButton={toggleEnableButton}
-        handleModalNewClient={handleModalNewSupplier}
-        handleModalEditClient={handleModalUpdateSupplier}
-        handleDeleteSelectedCliente={handleModalDeleteSupplier}
+        handleModalNewSupplier={handleModalNewSupplier}
+        handleModalEditSupplier={handleModalUpdateSupplier}
+        handleDeleteSelectedSupplier={handleModalDeleteSupplier}
       />
       <main className='table-wrapper'>
         {tableData && (
@@ -143,30 +138,29 @@ function App() {
             tableData={tableData}
             supplierData={supplierData}
             handleCheckedId={handleCheckedId}
-            loadTable={loadTable}
             toggleIsFavorite={toggleIsFavorite}
           />
         )}
         <ModalNewSupplier
+          loadTable={loadTable}
           supplierData={supplierData}
           inputChanges={inputChanges}
-          handleModalNewSupplier={handleModalNewSupplier}
+          onClick={handleModalNewSupplier}
           modalNewSupplierIsActive={modalNewSupplierIsActive}
-          loadTable={loadTable}
         />
         <ModalUpdateSupplier
+          loadTable={loadTable}
           supplierData={supplierData}
           inputChanges={inputChanges}
-          handleModalUpdateSupplier={handleModalUpdateSupplier}
-          modalUpdateSupplierIsActive={modalUpdateClientIsActive}
-          loadTable={loadTable}
+          onClick={handleModalUpdateSupplier}
+          modalUpdateSupplierIsActive={modalUpdateSupplierIsActive}
         />
         <ModalDeleteSupplier
           checkedId={checkedId}
           inputChanges={inputChanges}
-          handleDeleteSelectedSupplier={handleModalDeleteSupplier}
-          modalDeleteSupplierIsActive={modalDeleteClienteIsActive}
           handleCheckedId={handleCheckedId}
+          onClick={handleModalDeleteSupplier}
+          modalDeleteSupplierIsActive={modalDeleteSupplierIsActive}
         />
       </main>
     </div>
