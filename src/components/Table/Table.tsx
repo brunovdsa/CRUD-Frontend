@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Tabel.scss';
 import { SupplierDataProps } from '../../interfaces/interfaces';
+import { SolidStar } from '../Icons/Icons';
 
 export interface TableProps {
   handleCheckedId: (id: number) => void;
@@ -11,6 +12,17 @@ export interface TableProps {
 }
 
 export function Table(props: TableProps) {
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlechange = (e: any) => {
+    setIsPressed(!isPressed);
+    if (e.currentTarget.className == 'fav-disabled') {
+      e.currentTarget.className = 'fav-enabled';
+    } else {
+      e.currentTarget.className = 'fav-disabled';
+    }
+  };
+
   return (
     <div className='table-wrapper'>
       <table cellPadding={0} cellSpacing={0}>
@@ -47,11 +59,17 @@ export function Table(props: TableProps) {
                   <td>{supplier.tipoFornecedor}</td>
                   <td>{supplier.observacao}</td>
                   <td>
-                    <input
-                      type='checkbox'
-                      value={supplier.id}
-                      onChange={() => props.toggleIsFavorite(supplier.id)}
-                    />
+                    <button
+                      className='fav-disabled'
+                      onClick={(e) => {
+                        console.log(e.currentTarget.className);
+                        handlechange(e);
+                        props.toggleIsFavorite(supplier.id);
+                      }}
+                    >
+                      {' '}
+                      <SolidStar />
+                    </button>
                   </td>
                 </tr>
               );

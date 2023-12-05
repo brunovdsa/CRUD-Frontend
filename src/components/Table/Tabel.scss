@@ -9,6 +9,24 @@
   overflow: hidden;
 }
 
+.fav-enabled,
+.fav-disabled {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.fav-enabled {
+  svg {
+    color: colors.$black;
+  }
+}
+.fav-disabled {
+  svg {
+    color: colors.$disabled;
+  }
+}
+
 table {
   background-color: colors.$black;
   font-size: fonts.$text;

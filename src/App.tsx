@@ -51,11 +51,12 @@ function App() {
     }
     if (tableData !== undefined) {
       let firstItem: any;
-      console.log('FIRST ITEM: ', firstItem);
+
       const filteredItems = tableData.filter((item) => {
         if (item.id === id) {
           firstItem = [item];
           console.log(item);
+          console.log('FIRST ITEM: ', firstItem);
           return false;
         }
         return true;

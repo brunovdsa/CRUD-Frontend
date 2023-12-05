@@ -16,9 +16,9 @@ interface ModalNewSupplierProps {
 
 export function ModalNewSupplier(props: ModalNewSupplierProps) {
   const [fieldsError, setFieldsError] = useState<boolean>(false);
-  const [emptyFiledsError, setEmptyFieldsError] = useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
   // const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
+  const [emptyFiledsError, setEmptyFieldsError] = useState<boolean>(false);
 
   const createNewSupplier = async (e: React.FormEvent) => {
     // let regEmail =
@@ -53,6 +53,7 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
           const results = await response.json();
           if (results.status === 500) {
             console.log(results.status);
+            setFieldsError(true);
             setEmptyFieldsError(false);
           } else {
             props.supplierData.nome === '' ||
