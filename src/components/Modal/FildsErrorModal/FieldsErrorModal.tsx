@@ -5,6 +5,7 @@ import { SubmitButton } from '../../SubmitButton/SubmitButton';
 
 interface FieldsErrorModalProps {
   errorDescription: string;
+  clear: () => void;
 }
 
 export function FieldsErrorModal(props: FieldsErrorModalProps) {
@@ -13,6 +14,7 @@ export function FieldsErrorModal(props: FieldsErrorModalProps) {
 
   const handleModalFieldsError = () => {
     setModalFieldsErrorIsActive(!modalFieldsErrorIsActive);
+    props.clear();
   };
 
   return (

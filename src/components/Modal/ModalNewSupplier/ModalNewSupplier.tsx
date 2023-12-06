@@ -15,22 +15,10 @@ interface ModalNewSupplierProps {
 }
 
 export function ModalNewSupplier(props: ModalNewSupplierProps) {
-  const [fieldsError, setFieldsError] = useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
+  const [fieldsError, setFieldsError] = useState<boolean>(false);
   const [emptyFiledsError, setEmptyFieldsError] = useState<boolean>(false);
   const [isEmailFormated, setIsEmailFormated] = useState<boolean>(false);
-
-  const emailMask = (e: any) => {
-    let regEmail =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (regEmail.test(e.currentTarget.value)) {
-      setEmptyFieldsError(true);
-      setIsEmailFormated(true);
-    } else {
-      setEmptyFieldsError(false);
-      setIsEmailFormated(false);
-    }
-  };
 
   const createNewSupplier = async (e: React.FormEvent) => {
     const body = new FormData();
@@ -39,6 +27,8 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
 
     let regEmail =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    {
+    }
 
     if (
       props.supplierData.nome === '' ||
@@ -48,48 +38,55 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
     ) {
       setFieldsError(true);
       setEmptyFieldsError(true);
+      setIsEmailFormated(false);
       return;
+    }
+    if (!regEmail.test(props.supplierData.email)) {
+      setFieldsError(true);
+      setIsEmailFormated(false);
+      setEmptyFieldsError(false);
     } else {
-      if (regEmail.test(props.supplierData.email)) {
-        const fetchData = async (url: string) => {
-          try {
-            const response = await fetch(url, {
-              method: 'POST',
-              body: body,
-            });
-            const results = await response.json();
-            if (results.status === 500) {
-              setFieldsError(true);
-              setEmptyFieldsError(false);
-              setIsEmailFormated(false);
-            } else {
-              props.supplierData.nome === '' ||
-                props.supplierData.email === '' ||
-                props.supplierData.tipoFornecedor === '' ||
-                props.supplierData.telefone === '';
-              setFieldsError(false);
-              setEmptyFieldsError(false);
-              props.onClick();
-              props.loadTable();
-              setRequestSend(true);
-            }
-          } catch (err) {
-            alert(`Erro: ${err}. Tente novamente.`);
+      const fetchData = async (url: string) => {
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            body: body,
+          });
+          const results = await response.json();
+          console.log(results);
+          if (results.status === 500) {
+            setFieldsError(true);
+            setEmptyFieldsError(false);
+            setIsEmailFormated(true);
+          } else {
+            props.supplierData.nome === '' ||
+              props.supplierData.email === '' ||
+              props.supplierData.tipoFornecedor === '' ||
+              props.supplierData.telefone === '';
+            props.onClick();
+            props.loadTable();
+            setRequestSend(true);
+            setFieldsError(false);
           }
-        };
-        fetchData(API_URL);
-        setRequestSend(false);
-      } else {
-        setFieldsError(true);
-        setEmptyFieldsError(false);
-        setIsEmailFormated(false);
-      }
+        } catch (err) {
+          alert(`Erro: ${err}. Tente novamente.`);
+        }
+      };
+      fetchData(API_URL);
     }
   };
 
   console.log('fieldsErro: ', fieldsError);
   console.log('emptyFields: ', emptyFiledsError);
   console.log('email formated: ', isEmailFormated);
+  console.log('requestSend: ', requestSend);
+
+  const clear = () => {
+    setFieldsError(false);
+    setIsEmailFormated(false);
+    setEmptyFieldsError(false);
+    setRequestSend(false);
+  };
 
   return (
     <>
@@ -109,25 +106,41 @@ export function ModalNewSupplier(props: ModalNewSupplierProps) {
           </div>
         </>
       )}
-      {fieldsError === true && emptyFiledsError === true ? (
-        <FieldsErrorModal errorDescription='Preencha todos os campos em branco!' />
+
+      {fieldsError === true &&
+      emptyFiledsError === true &&
+      isEmailFormated === false ? (
+        <FieldsErrorModal
+          errorDescription='Preencha todos os campos em branco!'
+          clear={clear}
+        />
       ) : (
         ''
       )}
 
-      {fieldsError === true && emptyFiledsError === false ? (
-        <FieldsErrorModal errorDescription='Email já cadastrado!' />
+      {fieldsError === true &&
+      emptyFiledsError === false &&
+      isEmailFormated === true ? (
+        <FieldsErrorModal
+          errorDescription='Email já cadastrado!'
+          clear={clear}
+        />
       ) : (
         ''
       )}
 
-      {fieldsError === true && isEmailFormated === false ? (
-        <FieldsErrorModal errorDescription={'Formato de email inválido!'} />
+      {fieldsError === true &&
+      emptyFiledsError === false &&
+      isEmailFormated === false ? (
+        <FieldsErrorModal
+          errorDescription={'Formato de email inválido!'}
+          clear={clear}
+        />
       ) : (
         ''
       )}
 
-      {requestSend === true ? (
+      {requestSend === true && fieldsError === false ? (
         <RequestResponseModal
           handleModal={props.onClick}
           typeRequest={'criado'}
