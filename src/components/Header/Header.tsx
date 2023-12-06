@@ -1,6 +1,7 @@
 import { DeleteIcon, EditIcon } from '../Icons/Icons';
-import './Header.scss';
 import { SupplierDataProps } from '../../interfaces/interfaces';
+
+import './Header.scss';
 
 interface HeaderProps {
   checkedId: number;

@@ -27,9 +27,7 @@ export function Table(props: TableProps) {
       <table cellPadding={0} cellSpacing={0}>
         <thead>
           <tr>
-            <td className='td-input'>
-              <input type='checkbox' />
-            </td>
+            <td>Selecione</td>
             <td>Nome</td>
             <td>Email</td>
             <td>Telefone</td>

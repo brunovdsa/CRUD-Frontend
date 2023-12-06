@@ -1,11 +1,12 @@
 import { useState } from 'react';
+
 import { Modal } from '../Modal';
 import { ExclamationIcon } from '../../Icons/Icons';
 import { SubmitButton } from '../../SubmitButton/SubmitButton';
 
 interface FieldsErrorModalProps {
   errorDescription: string;
-  clear: () => void;
+  clearFieldsStates: () => void;
 }
 
 export function FieldsErrorModal(props: FieldsErrorModalProps) {
@@ -14,7 +15,7 @@ export function FieldsErrorModal(props: FieldsErrorModalProps) {
 
   const handleModalFieldsError = () => {
     setModalFieldsErrorIsActive(!modalFieldsErrorIsActive);
-    props.clear();
+    props.clearFieldsStates();
   };
 
   return (

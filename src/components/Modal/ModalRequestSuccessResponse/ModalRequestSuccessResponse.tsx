@@ -1,15 +1,17 @@
 import { useState } from 'react';
+
+import { SuccessIcon } from '../../Icons/Icons';
 import { Modal } from '../Modal';
 import { SubmitButton } from '../../SubmitButton/SubmitButton';
-import './RequestResponseModal.scss';
-import { SuccessIcon } from '../../Icons/Icons';
+
+import './ModalRequestSuccessResponse.scss';
 
 interface RequestModalProps {
-  handleModal: () => void;
   typeRequest: string;
+  handleModal: () => void;
 }
 
-export function RequestResponseModal(props: RequestModalProps) {
+export function ModalRequestSuccessResponse(props: RequestModalProps) {
   const [modalRequestResponseIsActive, setModalRequestResponseIsActive] =
     useState(true);
 

@@ -1,27 +1,22 @@
 import { useState } from 'react';
-import { SupplierDataProps } from '../../../interfaces/interfaces';
-import { API_URL } from '../../../services/api';
-import { Form } from '../../Form/Form';
+
+import { API_URL, regexEmail } from '../../../services/api';
+
 import { Modal } from '../Modal';
-import { RequestResponseModal } from '../RequestResponseModal/RequestResponseModal';
-import { FieldsErrorModal } from '../FildsErrorModal/FieldsErrorModal';
+import { Form } from '../../Form/Form';
+import { ModalErrorToShow } from '../ModalErrorToShow/ModalErrorToShow';
 
-interface ModalUpdateSupplierProps {
-  supplierData: SupplierDataProps;
-  modalUpdateSupplierIsActive: boolean;
-  inputChanges: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
-  loadTable: () => void;
-}
+import { ModalSupplierProps } from '../../../interfaces/interfaces';
 
-export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
-  const [fieldsError, setFieldsError] = useState<boolean>(false);
+export function ModalUpdateSupplier(props: ModalSupplierProps) {
+  const [hasError, setHasError] = useState<boolean>(false);
   const [emptyFiledsError, setEmptyFieldsError] = useState<boolean>(false);
   const [requestSend, setRequestSend] = useState<boolean>(false);
+  const [isEmailFormated, setIsEmailFormated] = useState<boolean>(false);
 
   const upDateSelectedSupplier = async (e: React.FormEvent) => {
-    const body = new FormData();
     e.preventDefault();
+    const body = new FormData();
     body.set('clienteData', JSON.stringify(props.supplierData));
 
     if (
@@ -30,9 +25,14 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
       props.supplierData.tipoFornecedor === '' ||
       props.supplierData.telefone === ''
     ) {
-      setFieldsError(true);
+      setHasError(true);
       setEmptyFieldsError(true);
       return;
+    }
+    if (!regexEmail.test(props.supplierData.email)) {
+      setHasError(true);
+      setIsEmailFormated(false);
+      setEmptyFieldsError(false);
     } else {
       const fetchData = async (url: string) => {
         try {
@@ -42,14 +42,15 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           });
           setRequestSend(true);
           const results = await response.json();
-          if (results.status === 500) {            
-            setEmptyFieldsError(false);            
+          if (results.status === 500) {
+            setHasError(true);
+            setEmptyFieldsError(false);
+            setIsEmailFormated(true);
           } else {
             props.onClick();
             props.loadTable();
-            setFieldsError(false);
-            setEmptyFieldsError(false);
             setRequestSend(true);
+            setHasError(false);
           }
         } catch (err) {
           alert(err);
@@ -60,9 +61,16 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
     }
   };
 
+  const clearFieldsStates = () => {
+    setHasError(false);
+    setIsEmailFormated(false);
+    setEmptyFieldsError(false);
+    setRequestSend(false);
+  };
+
   return (
     <>
-      {props.modalUpdateSupplierIsActive && (
+      {props.modalSupplierIsActive && (
         <>
           <div className='bg-overlay' onClick={props.onClick}></div>
           <div>
@@ -78,25 +86,14 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           </div>
         </>
       )}
-      {fieldsError === true && emptyFiledsError === true ? (
-        <FieldsErrorModal errorDescription='Preencha todos os campos em branco!' />
-      ) : (
-        ''
-      )}
-
-      {fieldsError === true && emptyFiledsError === false ? (
-        <FieldsErrorModal errorDescription='Email já cadastrado!' />
-      ) : (
-        ''
-      )}
-      {requestSend === true ? (
-        <RequestResponseModal
-          handleModal={props.onClick}
-          typeRequest={'atualizado'}
-        />
-      ) : (
-        ''
-      )}
+      <ModalErrorToShow
+        hasError={hasError}
+        emptyFieldsError={emptyFiledsError}
+        isEmailFormated={isEmailFormated}
+        requestSend={requestSend}
+        clearFieldsStates={clearFieldsStates}
+        onClick={props.onClick}
+      />
     </>
   );
 }

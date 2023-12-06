@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
-import './App.scss';
+
+import { API_URL } from './services/api';
+
 import { Header } from './components/Header/Header';
 import { Table } from './components/Table/Table';
-import { SupplierDataProps } from './interfaces/interfaces';
-import { API_URL } from './services/api';
 import { ModalNewSupplier } from './components/Modal/ModalNewSupplier/ModalNewSupplier';
 import { ModalUpdateSupplier } from './components/Modal/ModalUpdateSupplier/ModalUpdateSupplier';
 import { ModalDeleteSupplier } from './components/Modal/ModalDeleteSupplier/ModalDeleteSupplier';
+
+import { SupplierDataProps } from './interfaces/interfaces';
+
+import './App.scss';
 
 function App() {
   const [checkedId, setCheckedId] = useState<number>(0);
@@ -28,7 +32,10 @@ function App() {
   const [modalDeleteSupplierIsActive, setModalDeleteSupplierIsActive] =
     useState(false);
 
-  //LISTA NA TABLE OS RESULTADOS DE GET
+  useEffect(() => {
+    loadTable();
+  }, []);
+
   const loadTable = async () => {
     try {
       const response = await fetch(API_URL);
@@ -39,10 +46,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    loadTable();
-  }, []);
-  //SETA FAVORITO
   function toggleIsFavorite(id: number) {
     if (id === checkedId) {
       setCheckedId(0);
@@ -62,7 +65,7 @@ function App() {
       setTabelData([...firstItem, ...filteredItems]);
     }
   }
-  // CHECK checkedId CHECKBOX
+
   const handleCheckedId = (id: number) => {
     if (id === checkedId) {
       setCheckedId(0);
@@ -74,7 +77,7 @@ function App() {
       ? setToggleEnableButton(true)
       : setToggleEnableButton(false);
   };
-  // MODAL NOVO FORNECEDOR
+
   const handleModalNewSupplier = async () => {
     setSupplierData({
       id: 0,
@@ -89,7 +92,7 @@ function App() {
 
     await loadTable();
   };
-  // MODAL UPDATE FORNECEDOR
+
   const handleModalUpdateSupplier = async () => {
     const fetchData = async (url: string) => {
       try {
@@ -105,12 +108,12 @@ function App() {
     setModalUpdateSupplierIsActive(!modalUpdateSupplierIsActive);
     await loadTable();
   };
-  //MODAL DELETAR FORNECEDOR
+
   const handleModalDeleteSupplier = async () => {
     setModalDeleteSupplierIsActive(!modalDeleteSupplierIsActive);
     await loadTable();
   };
-  //CONTROLE FORM INPUTS
+
   const inputChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSupplierData({
@@ -143,14 +146,14 @@ function App() {
           supplierData={supplierData}
           inputChanges={inputChanges}
           onClick={handleModalNewSupplier}
-          modalNewSupplierIsActive={modalNewSupplierIsActive}
+          modalSupplierIsActive={modalNewSupplierIsActive}
         />
         <ModalUpdateSupplier
           loadTable={loadTable}
           supplierData={supplierData}
           inputChanges={inputChanges}
           onClick={handleModalUpdateSupplier}
-          modalUpdateSupplierIsActive={modalUpdateSupplierIsActive}
+          modalSupplierIsActive={modalUpdateSupplierIsActive}
         />
         <ModalDeleteSupplier
           checkedId={checkedId}

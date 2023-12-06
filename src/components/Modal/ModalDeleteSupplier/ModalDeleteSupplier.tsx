@@ -1,12 +1,14 @@
 import { useState } from 'react';
+
 import { API_URL } from '../../../services/api';
-import { ReturnButton } from '../../CancelButton/ReturnButton';
+
+import { Modal } from '../Modal';
 import { ExclamationIcon } from '../../Icons/Icons';
 import { SubmitButton } from '../../SubmitButton/SubmitButton';
-import { Modal } from '../Modal';
+import { ReturnButton } from '../../CancelButton/ReturnButton';
+import { ModalRequestSuccessResponse } from '../ModalRequestSuccessResponse/ModalRequestSuccessResponse';
+
 import './ModalDeleteSupplier.scss';
-import { RequestResponseModal } from '../RequestResponseModal/RequestResponseModal';
-import { FieldsErrorModal } from '../FildsErrorModal/FieldsErrorModal';
 
 interface ModalDeleteSupplierProps {
   modalDeleteSupplierIsActive: boolean;
@@ -67,7 +69,7 @@ export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
       )}
 
       {requestSend === true ? (
-        <RequestResponseModal
+        <ModalRequestSuccessResponse
           handleModal={props.onClick}
           typeRequest={'deletado'}
         />
