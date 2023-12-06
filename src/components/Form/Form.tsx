@@ -38,7 +38,9 @@ export function Form(props: FormProps) {
               name='email'
               placeholder='E-mail'
               value={props.supplierData.email}
-              onChange={props.inputChanges}
+              onChange={(e) => {
+                props.inputChanges(e);
+              }}
             />
           </div>
           <div>

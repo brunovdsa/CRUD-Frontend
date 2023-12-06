@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { API_URL } from '../../../services/api';
 import { ReturnButton } from '../../CancelButton/ReturnButton';
 import { ExclamationIcon } from '../../Icons/Icons';
 import { SubmitButton } from '../../SubmitButton/SubmitButton';
 import { Modal } from '../Modal';
 import './ModalDeleteSupplier.scss';
+import { RequestResponseModal } from '../RequestResponseModal/RequestResponseModal';
+import { FieldsErrorModal } from '../FildsErrorModal/FieldsErrorModal';
 
 interface ModalDeleteSupplierProps {
   modalDeleteSupplierIsActive: boolean;
@@ -14,18 +17,24 @@ interface ModalDeleteSupplierProps {
 }
 
 export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
-  //DELETA Supplier SELECIONADO
+  const [requestSend, setRequestSend] = useState<boolean>(false);
+
   const deleteSelectedSupplier = async () => {
     await fetch(`${API_URL}/${props.checkedId}`, {
       method: 'DELETE',
     })
       .then((res) => {
-        console.log(res);
-        props.onClick();
-        props.handleCheckedId(0);
+        if (res.status === 200) {
+          setRequestSend(true);
+          props.onClick();
+          props.handleCheckedId(0);
+        } else {
+          setRequestSend(false);
+          props.onClick();
+        }
       })
       .catch((err) => {
-        console.log(err);
+        alert(`Erro: ${err}. Tente novamente.`);
       });
   };
 
@@ -55,6 +64,15 @@ export function ModalDeleteSupplier(props: ModalDeleteSupplierProps) {
             </Modal>
           </div>
         </>
+      )}
+
+      {requestSend === true ? (
+        <RequestResponseModal
+          handleModal={props.onClick}
+          typeRequest={'deletado'}
+        />
+      ) : (
+        ''
       )}
     </>
   );

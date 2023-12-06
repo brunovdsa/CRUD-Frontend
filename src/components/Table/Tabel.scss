@@ -48,6 +48,7 @@ table {
   thead {
     td {
       width: 4rem;
+      font-weight: fonts.$bold;
     }
   }
   tbody tr:nth-child(odd) {
@@ -56,7 +57,7 @@ table {
 
   td {
     height: 2rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border-right: solid 1px colors.$disabled;
   }
   td:last-child {
@@ -67,17 +68,4 @@ table {
   .td-input {
     width: 1rem;
   }
-}
-
-table th:first-child {
-  -moz-border-radius: 10px 0 0 0 !important;
-}
-table th:last-child {
-  -moz-border-radius: 0 10px 0 0 !important;
-}
-table tr:last-child td:first-child {
-  -moz-border-radius: 0 0 0 10px !important;
-}
-table tr:last-child td:last-child {
-  -moz-border-radius: 0 0 10px 0 !important;
 }

@@ -40,3 +40,9 @@
   -webkit-backdrop-filter: blur(10px);
   z-index: 1;
 }
+
+@media (min-width: 1100px) {
+  .modal {
+    max-width: 50%;
+  }
+}

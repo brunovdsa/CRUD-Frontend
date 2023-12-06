@@ -61,7 +61,6 @@ export function Table(props: TableProps) {
                     <button
                       className='fav-disabled'
                       onClick={(e) => {
-                        console.log(e.currentTarget.className);
                         handlechange(e);
                         props.toggleIsFavorite(supplier.id);
                       }}

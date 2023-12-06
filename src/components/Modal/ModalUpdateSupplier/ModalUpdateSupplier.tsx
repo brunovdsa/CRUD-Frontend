@@ -42,10 +42,8 @@ export function ModalUpdateSupplier(props: ModalUpdateSupplierProps) {
           });
           setRequestSend(true);
           const results = await response.json();
-          if (results.status === 500) {
-            console.log(results.status);
-            setEmptyFieldsError(false);
-            console.log(results);
+          if (results.status === 500) {            
+            setEmptyFieldsError(false);            
           } else {
             props.onClick();
             props.loadTable();

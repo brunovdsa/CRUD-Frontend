@@ -35,7 +35,7 @@ function App() {
       const results = await response.json();
       setTabelData(results);
     } catch (err) {
-      console.log(err);
+      alert(`Erro: ${err}. Tente novamente.`);
     }
   };
 
@@ -55,8 +55,6 @@ function App() {
       const filteredItems = tableData.filter((item) => {
         if (item.id === id) {
           firstItem = [item];
-          console.log(item);
-          console.log('FIRST ITEM: ', firstItem);
           return false;
         }
         return true;
@@ -99,7 +97,7 @@ function App() {
         const results = await response.json();
         setSupplierData(results);
       } catch (err) {
-        console.log(err);
+        alert(`Erro: ${err}. Tente novamente.`);
       }
     };
     fetchData(`${API_URL}/${checkedId}`);
@@ -115,7 +113,6 @@ function App() {
   //CONTROLE FORM INPUTS
   const inputChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(value);
     setSupplierData({
       ...supplierData,
       [e.target.name]: value,
